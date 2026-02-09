@@ -619,7 +619,7 @@ Emerald Heritage Lounge dirancang sebagai interior yang bersikap tenang di tenga
             </div>
             <script type="text/javascript">
                 var intervalId = setInterval(function() {
-                    if (MtPopUpList) {
+                     if (typeof MtPopUpList !== 'undefined') { {
                         LanguageMenu = new MtPopUpList();
                         var langMenu = document.getElementById(LanguageMenu_popupid);
                         var origLangDiv = document.createElement("div");
@@ -630,7 +630,7 @@ Emerald Heritage Lounge dirancang sebagai interior yang bersikap tenang di tenga
                         window["LanguageMenu"] = LanguageMenu;
                         clearInterval(intervalId);
                     }
-                }, 1);
+                }; }, 200);
             </script>
         </div>
         <div class="TnITTtw-fp-collapsed-button" style="display: block;"></div>

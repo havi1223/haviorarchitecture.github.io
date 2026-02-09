@@ -981,7 +981,7 @@ Perpaduan prinsip minimalisme dan arsitektur tropikal menghasilkan hunian yang t
             </div>
             <script type="text/javascript">
                 var intervalId = setInterval(function() {
-                    if (MtPopUpList) {
+                    if (typeof MtPopUpList !== 'undefined') { {
                         LanguageMenu = new MtPopUpList();
                         var langMenu = document.getElementById(LanguageMenu_popupid);
                         var origLangDiv = document.createElement("div");
@@ -992,7 +992,7 @@ Perpaduan prinsip minimalisme dan arsitektur tropikal menghasilkan hunian yang t
                         window["LanguageMenu"] = LanguageMenu;
                         clearInterval(intervalId);
                     }
-                }, 1);
+               }; }, 200);
             </script>
         </div>
         <div class="TnITTtw-fp-collapsed-button" style="display: block;"></div>
