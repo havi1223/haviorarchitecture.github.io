@@ -84,6 +84,7 @@
                 
                 let selectedPrice = 200000 // Default BUILD READY
                 let selectedName = 'BUILD READY'
+                let selectedCategory = null // Design category: Arsitektur / Interior / Landscape
                 
                 // Function to update project info in summary
                 function updateProjectInfo() {
@@ -95,9 +96,13 @@
                     const lokasiSpan = document.querySelector('[data-field="lokasi"]')
                     if (lokasiSpan) lokasiSpan.textContent = lokasi
                     
-                    // Update project type
+                    // Update project type (detailed Project Info box)
                     const tipeSpan = document.querySelector('[data-field="tipeProyek"]')
                     if (tipeSpan) tipeSpan.textContent = tipeProyek
+
+                    // Update design category shown in the compact Ringkasan (separate from project type)
+                    const kategoriSummary = document.querySelector('[data-summary="kategori"]')
+                    if (kategoriSummary) kategoriSummary.textContent = selectedCategory || '-'
                     
                     // Update timeline
                     const timelineSpan = document.querySelector('[data-field="timeline"]')
@@ -297,6 +302,32 @@
                 if (luasLahanInput) {
                     luasLahanInput.addEventListener('input', updateProjectInfo)
                 }
+
+                // Project type buttons (Arsitektur / Interior / Landscape)
+                const typeButtons = document.querySelectorAll('.project-type-btn')
+                if (typeButtons && typeButtons.length) {
+                    function clearTypeSelection() {
+                        typeButtons.forEach(b => b.classList.remove('selected-type'))
+                    }
+
+                    typeButtons.forEach(btn => {
+                        btn.addEventListener('click', function () {
+                                const val = this.dataset.type || ''
+                                // Do not change the detailed `#tipeProyek` select here —
+                                // this is a design category (compact Ringkasan field) only.
+                                selectedCategory = val || null
+                                clearTypeSelection()
+                                this.classList.add('selected-type')
+                                updateProjectInfo()
+                            })
+                    })
+
+                    // Initialize selection: check if any button already has the selected-type class
+                    const preselected = Array.from(typeButtons).find(b => b.classList.contains('selected-type'))
+                    if (preselected) {
+                        selectedCategory = preselected.dataset.type || null
+                    }
+                }
                 
                 function updateRadioButtons() {
                     const packageOptions = document.querySelectorAll('.package-option')
@@ -447,6 +478,7 @@
                     const budgetMin = budgetMinInput?.value || ''
                     const budgetMax = budgetMaxInput?.value || ''
                     const paket = selectedName || '-'
+                    const kategoriDesain = (typeof selectedCategory !== 'undefined' && selectedCategory) ? selectedCategory : '-'
                     const pricePerM2 = selectedPrice || 0
                     const total = totalLuasBangunan * pricePerM2
 
@@ -500,6 +532,9 @@
                     doc.setFontSize(10)
                     doc.text('Paket Layanan:', 48, y)
                     doc.text(paket, 200, y)
+                    y += 18
+                    doc.text('Kategori Desain:', 48, y)
+                    doc.text(kategoriDesain, 200, y)
                     y += 18
                     doc.text('Luas Bangunan:', 48, y)
                     doc.text(String(totalLuasBangunan) + ' m²', 200, y)
@@ -615,6 +650,11 @@
             .green-button {
                     background-color: rgb(62 147 117);
             }
+            .project-type-btn.selected-type {
+                background-color: #A8E6CF !important;
+                color: #2C2C2C !important;
+                box-shadow: 0 6px 12px rgba(0,0,0,0.06) !important;
+            }
         </style>
         <script type="module">
             const originalConsoleError = console.error;
@@ -719,7 +759,7 @@
                         <div class="hidden md:flex items-center gap-4 bg-[#F0F0F0] px-2 py-2 rounded-2xl shadow-neumorph-inset border border-white/30">
                             <nav class="flex items-center gap-2">
                                 <button class="px-6 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 text-[#2C2C2C]/70 hover:text-primary hover:shadow-neumorph-outset"><a href="#featured-projects">Projects</a></button>
-                                <button class="px-6 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 text-[#2C2C2C]/70 hover:text-primary hover:shadow-neumorph-outset"><a href="#paket-jasa">Kalkulator RAB</a></button>
+                                <button class="px-6 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 text-[#2C2C2C]/70 hover:text-primary hover:shadow-neumorph-outset"><a href="#paket-jasa">Paket Jasa</a></button>
                                 <button class="px-6 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 text-[#2C2C2C]/70 hover:text-primary hover:shadow-neumorph-outset"><a href="#about">About</a></button>
                             </nav>
                             <a href="https://wa.me/6285645259797?text=Halo%20Saya%20mau%20order%20untuk%20paket%20Desain%20%2C%2C" target="_blank" rel="noopener noreferrer">
@@ -904,6 +944,92 @@ Emerald Heritage Lounge dirancang sebagai interior yang bersikap tenang di tenga
                                     </div>
                                 </div>
                             </div>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                                <div class="relative rounded-2xl shadow-neumorph-outset border-none bg-[#F0F0F0] text-[#2C2C2C] p-3 hover:shadow-neumorph-hover cursor-pointer overflow-hidden transition-all duration-300 ease-in-out group h-[450px] flex flex-col">
+                                    <div class="relative w-full h-full rounded-[1.5rem] overflow-hidden shadow-neumorph-inset">
+                                        <img src="./Haviarchitecture/1770540468275-0zb001dkoys.png" alt="LPTQ, Kalimantan" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-300"></div>
+                                        <div class="absolute bottom-0 left-0 right-0 p-8 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
+                                            <div class="flex items-center gap-2 mb-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100">
+                                                <span class="px-3 py-1 bg-green text-white text-[10px] font-bold uppercase tracking-widest rounded-full">Arsitek</span>
+                                            </div>
+                                            <h3 class="text-2xl font-bold mb-3 text-white">LPTQ, Kalimantan</h3>
+                                            <p class="text-white/80 line-clamp-2 text-sm max-w-xs opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-200 mb-4"></p>
+                                            <div class="flex items-center gap-2 text-primary text-xs font-bold uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-300">
+                                                View Case Study 
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right w-4 h-4">
+                                                    <path d="M5 12h14"></path>
+                                                    <path d="m12 5 7 7-7 7"></path>
+                                                </svg>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="relative rounded-2xl shadow-neumorph-outset border-none bg-[#F0F0F0] text-[#2C2C2C] p-3 hover:shadow-neumorph-hover cursor-pointer overflow-hidden transition-all duration-300 ease-in-out group h-[450px] flex flex-col">
+                                    <div class="relative w-full h-full rounded-[1.5rem] overflow-hidden shadow-neumorph-inset">
+                                        <img src="./Haviarchitecture/1770518627720-qwv8pweatzb.png" alt="MMHouse, Concrete Canopy House" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-300"></div>
+                                        <div class="absolute bottom-0 left-0 right-0 p-8 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
+                                            <div class="flex items-center gap-2 mb-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100">
+                                                <span class="px-3 py-1 bg-green text-white text-[10px] font-bold uppercase tracking-widest rounded-full">Arsitek</span>
+                                            </div>
+                                            <h3 class="text-2xl font-bold mb-3 text-white">MMHouse, Concrete Canopy House</h3>
+                                            <p class="text-white/80 line-clamp-2 text-sm max-w-xs opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-200 mb-4">Concrete Canopy House
+
+Concrete Canopy House dirancang sebagai hunian tropis kontemporer yang mengedepankan ketenangan, perlindungan, dan kejujuran material. Bangunan ini merespons iklim dan konteks tapak melalui komposisi massa yang tegas namun bersahaja, menghadirkan rumah yang tidak menonjol secara berlebihan, tetapi kuat dalam karakter dan pengalaman ruang.
+
+Massa bangunan disusun berlapis dengan pendekatan hierarki yang jelas antara ruang publik dan privat. Lantai dasar dirancang lebih terbuka dan terhubung langsung dengan ruang luar—halaman, kolam, dan area transisi—sementara lantai atas dibentuk sebagai volume beton masif yang lebih tertutup dan privat. Volume atas ini sekaligus berperan sebagai elemen pelindung, menciptakan bayangan dan menaungi aktivitas di bawahnya.
+
+Elemen kanopi beton menjadi gestur arsitektural utama. Selain berfungsi sebagai carport dan ruang transisi, kanopi ini memperkuat narasi rumah sebagai tempat berlindung dari panas dan hujan, sekaligus menegaskan karakter struktural bangunan. Hubungan antara massa, kanopi, dan ruang luar dirancang untuk menciptakan kenyamanan termal serta pengalaman ruang yang bertahap.
+
+Pendekatan material menekankan kejujuran dan ketahanan jangka panjang. Beton ekspos dipilih sebagai ekspresi struktur yang apa adanya—kokoh, tenang, dan minim ornamen—kemudian diseimbangkan dengan bidang plester putih untuk menghadirkan kontras visual yang bersih. Elemen kayu digunakan secara selektif pada area tertentu untuk memberi kehangatan, sementara roster beton berfungsi sebagai penyaring cahaya, udara, dan privasi.
+
+Bukaan dirancang vertikal dan terkontrol, memungkinkan cahaya alami masuk secara lembut tanpa mengorbankan privasi. Pada malam hari, pencahayaan hangat dari dalam bangunan membentuk suasana yang kontras dengan massa beton yang solid, menghadirkan kesan hunian yang hangat dan hidup di balik fasad yang tenang.
+
+Concrete Canopy House bukan sekadar objek arsitektur, melainkan ruang hidup yang dirancang untuk dihuni dalam jangka panjang—sebuah rumah yang menawarkan keteduhan, ketenangan, dan keseimbangan antara struktur, cahaya, dan lanskap.</p>
+                                            <div class="flex items-center gap-2 text-primary text-xs font-bold uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-300">
+                                                View Case Study 
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right w-4 h-4">
+                                                    <path d="M5 12h14"></path>
+                                                    <path d="m12 5 7 7-7 7"></path>
+                                                </svg>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="relative rounded-2xl shadow-neumorph-outset border-none bg-[#F0F0F0] text-[#2C2C2C] p-3 hover:shadow-neumorph-hover cursor-pointer overflow-hidden transition-all duration-300 ease-in-out group h-[450px] flex flex-col" style="transform: none;">
+                                    <div class="relative w-full h-full rounded-[1.5rem] overflow-hidden shadow-neumorph-inset">
+                                        <img src="./Haviarchitecture/1770351693758-dv9uj1hprg.png" alt="Apartment Lobby, Emerald Heritage Lounge" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-300"></div>
+                                        <div class="absolute bottom-0 left-0 right-0 p-8 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
+                                            <div class="flex items-center gap-2 mb-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100">
+                                                <span class="px-3 py-1 bg-green text-white text-[10px] font-bold uppercase tracking-widest rounded-full">Interior</span>
+                                            </div>
+                                            <h3 class="text-2xl font-bold mb-3 text-white">Apartment Lobby, Emerald Heritage Lounge</h3>
+                                            <p class="text-white/80 line-clamp-2 text-sm max-w-xs opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-200 mb-4">Emerald Heritage Lounge
+
+Ruang ini dirancang sebagai sebuah jeda—sebuah interior yang tidak sekadar berfungsi sebagai lounge, tetapi sebagai pengalaman emosional yang menenangkan. Emerald Heritage Lounge memaknai kemewahan bukan melalui kemegahan berlebihan, melainkan melalui ketenangan, kedalaman warna, dan kejujuran material.
+
+Bahasa ruang dibentuk oleh geometri melengkung yang mengalir, hadir pada dinding dan plafon sebagai upaya melembutkan batas serta menghilangkan kesan rigid. Kurva-kurva ini membimbing pergerakan secara intuitif, menciptakan sirkulasi yang natural dan ritme ruang yang tenang. Tidak ada sudut tajam yang mendominasi—ruang memilih untuk bersikap ramah dan merangkul.
+
+Palet hijau zamrud menjadi elemen utama yang membangun atmosfer kontemplatif. Warna ini merepresentasikan keseimbangan antara alam dan kemewahan klasik, diperkuat oleh material kulit coklat tua, kayu gelap, dan lantai batu alam yang menghadirkan kesan hangat, berat, dan membumi. Setiap material dipilih untuk menua dengan indah, membentuk karakter ruang yang bertahan melampaui tren.
+
+Plafon aksen dengan tekstur artistik berwarna keemasan berfungsi sebagai focal point visual—sebuah elemen dramatik yang tidak mendominasi, namun memberi identitas kuat pada ruang. Cahaya hangat tersembunyi mengikuti kontur plafon, menciptakan efek melayang dan mempertegas kedalaman ruang tanpa silau, menghadirkan ambience yang intim dan bersahaja.
+
+Tata furnitur disusun dalam kelompok-kelompok kecil, membentuk ruang duduk yang privat tanpa sekat masif. Tanaman indoor berdaun lebar digunakan sebagai elemen transisi, memperhalus skala ruang sekaligus memperkuat hubungan visual dengan alam. Ruang publik ini kemudian terasa personal—terbuka, namun tetap terlindungi.
+
+Emerald Heritage Lounge dirancang sebagai interior yang bersikap tenang di tengah dinamika. Sebuah ruang yang mengundang untuk berhenti sejenak, duduk, dan merasakan waktu berjalan lebih lambat—di mana kemewahan hadir bukan untuk dipamerkan, melainkan untuk dirasakan.</p>
+                                            <div class="flex items-center gap-2 text-primary text-xs font-bold uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-300">
+                                                View Case Study 
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right w-4 h-4">
+                                                    <path d="M5 12h14"></path>
+                                                    <path d="m12 5 7 7-7 7"></path>
+                                                </svg>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="mt-12 text-center md:hidden">
                                 <a href="https://susunruang.com/projects">
                                     <button class="inline-flex items-center justify-center rounded-xl text-sm font-bold ring-offset-background transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-[#F0F0F0] text-[#2C2C2C] shadow-neumorph-outset hover:shadow-neumorph-hover active:shadow-neumorph-inset h-12 px-8 py-3 w-full">View All Projects</button>
@@ -999,10 +1125,10 @@ Emerald Heritage Lounge dirancang sebagai interior yang bersikap tenang di tenga
                                             <p class="text-[#2C2C2C]/50 text-sm mt-2 ml-1">Estimasi biaya jasa desain profesional.</p>
                                         </div>
                                         <div class="p-2 rounded-xl bg-[#F0F0F0] shadow-neumorph-inset inline-flex gap-2">
-                                            <button class="
-                  relative px-4 py-3 rounded-lg text-sm font-bold transition-all duration-300 flex items-center gap-2
-                  bg-[#F0F0F0] text-[#2C2C2C] shadow-neumorph-outset scale-105
-                ">
+                                                                                        <button class="project-type-btn
+                                    relative px-4 py-3 rounded-lg text-sm font-bold transition-all duration-300 flex items-center gap-2
+                                    text-[#2C2C2C]/50 hover:text-[#2C2C2C] hover:shadow-neumorph-outset
+                                " data-type="Arsitektur">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-building text-[#A8E6CF]">
                                                     <rect width="16" height="20" x="4" y="2" rx="2" ry="2"></rect>
                                                     <path d="M9 22v-4h6v4"></path>
@@ -1018,10 +1144,10 @@ Emerald Heritage Lounge dirancang sebagai interior yang bersikap tenang di tenga
                                                 </svg>
                                                 <span>Arsitektur</span>
                                             </button>
-                                            <button class="
-                  relative px-4 py-3 rounded-lg text-sm font-bold transition-all duration-300 flex items-center gap-2
-                  text-[#2C2C2C]/50 hover:text-[#2C2C2C] hover:shadow-neumorph-outset
-                ">
+                                                                                        <button class="project-type-btn
+                                    relative px-4 py-3 rounded-lg text-sm font-bold transition-all duration-300 flex items-center gap-2
+                                    text-[#2C2C2C]/50 hover:text-[#2C2C2C] hover:shadow-neumorph-outset
+                                " data-type="Interior">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-armchair text-gray-400">
                                                     <path d="M19 9V6a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v3"></path>
                                                     <path d="M3 16a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-5a2 2 0 0 0-4 0v1.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V11a2 2 0 0 0-4 0z"></path>
@@ -1030,10 +1156,10 @@ Emerald Heritage Lounge dirancang sebagai interior yang bersikap tenang di tenga
                                                 </svg>
                                                 <span>Interior</span>
                                             </button>
-                                            <button class="
-                  relative px-4 py-3 rounded-lg text-sm font-bold transition-all duration-300 flex items-center gap-2
-                  text-[#2C2C2C]/50 hover:text-[#2C2C2C] hover:shadow-neumorph-outset
-                ">
+                                                                                        <button class="project-type-btn
+                                    relative px-4 py-3 rounded-lg text-sm font-bold transition-all duration-300 flex items-center gap-2
+                                    text-[#2C2C2C]/50 hover:text-[#2C2C2C] hover:shadow-neumorph-outset
+                                " data-type="Landscape">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trees text-gray-400">
                                                     <path d="M10 10v.2A3 3 0 0 1 8.9 16H5a3 3 0 0 1-1-5.8V10a3 3 0 0 1 6 0Z"></path>
                                                     <path d="M7 16v6"></path>
@@ -1348,7 +1474,7 @@ Emerald Heritage Lounge dirancang sebagai interior yang bersikap tenang di tenga
                                                         </div>
                                                         <div class="flex justify-between items-center text-sm">
                                                             <span class="text-[#2C2C2C]/60 font-medium">Tipe</span>
-                                                            <span class="font-bold text-[#2C2C2C]">Arsitektur</span>
+                                                            <span class="font-bold text-[#2C2C2C]" data-summary="kategori">-</span>
                                                         </div>
                                                         <div class="flex justify-between items-center text-sm">
                                                             <span class="text-[#2C2C2C]/60 font-medium">Luas</span>
@@ -1554,7 +1680,7 @@ Emerald Heritage Lounge dirancang sebagai interior yang bersikap tenang di tenga
                                             <a href="#featured-projects" class="text-[#2C2C2C]/70 hover:text-primary font-medium transition-colors hover:shadow-neumorph-outset px-2 py-1 rounded-md inline-block">Projects</a>
                                         </li>
                                         <li>
-                                            <a href="#paket-jasa" class="text-[#2C2C2C]/70 hover:text-primary font-medium transition-colors hover:shadow-neumorph-outset px-2 py-1 rounded-md inline-block">Kalkulator RAB</a>
+                                            <a href="#paket-jasa" class="text-[#2C2C2C]/70 hover:text-primary font-medium transition-colors hover:shadow-neumorph-outset px-2 py-1 rounded-md inline-block">Paket Jasa</a>
                                         </li>
                                         <li>
                                             <a href="#contact" class="text-[#2C2C2C]/70 hover:text-primary font-medium transition-colors hover:shadow-neumorph-outset px-2 py-1 rounded-md inline-block">Kontak</a>
