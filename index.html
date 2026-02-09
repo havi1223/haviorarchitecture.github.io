@@ -28,6 +28,60 @@
             }
             ;
         </script>
+        <script>
+            function attachWhatsAppListeners() {
+                function sendWhatsAppMessage(customMessage = null) {
+                    let msg = customMessage || document.getElementById('message')?.value.trim() || 'Halo, saya ingin berkonsultasi mengenai proyek arsitektur saya.';
+                    
+                    if (!msg) {
+                        alert('Pesan masih kosong')
+                        return
+                    }
+
+                    const phone = '6285645259797'
+                    const url = 'https://wa.me/' + phone + '?text=' + encodeURIComponent(msg)
+                    window.location.href = url
+                }
+
+                // Handle custom message input button
+                const waLink = document.getElementById('waLink')
+                if (waLink && !waLink.hasListener) {
+                    waLink.addEventListener('click', function (e) {
+                        e.preventDefault()
+                        const msg = document.getElementById('message').value.trim()
+                        if (!msg) {
+                            alert('Pesan masih kosong')
+                            return
+                        }
+                        sendWhatsAppMessage(msg)
+                    })
+                    waLink.hasListener = true
+                }
+
+                // Handle calculator button
+                const waLinkCalculator = document.getElementById('waLinkCalculator')
+                if (waLinkCalculator && !waLinkCalculator.hasListener) {
+                    waLinkCalculator.addEventListener('click', function (e) {
+                        e.preventDefault()
+                        sendWhatsAppMessage('Halo, saya ingin berkonsultasi mengenai proyek arsitektur saya.')
+                    })
+                    waLinkCalculator.hasListener = true
+                }
+            }
+
+            // Try attaching when DOM is ready
+            document.addEventListener('DOMContentLoaded', attachWhatsAppListeners)
+
+            // Retry mechanism for dynamically rendered content
+            let retryCount = 0
+            const attachInterval = setInterval(function() {
+                attachWhatsAppListeners()
+                retryCount++
+                if (retryCount > 50) {
+                    clearInterval(attachInterval)
+                }
+            }, 100)
+        </script>
         <script type="module">
             const observer = new MutationObserver( (mutations) => {
                 for (const mutation of mutations) {
@@ -169,18 +223,18 @@
             <div class="bg-[#F0F0F0] text-[#2C2C2C] min-h-screen font-sans selection:bg-primary selection:text-[#2C2C2C] overflow-x-hidden">
                 <header class="fixed top-4 left-4 right-4 z-50 transition-all duration-300 rounded-2xl bg-[#F0F0F0]/90 backdrop-blur-md shadow-neumorph-outset border border-white/20 py-4 px-8" style="transform: none;">
                     <div class="container mx-auto flex justify-between items-center">
-                        <a class="flex items-center gap-3 group relative z-50" href="https://susunruang.com/">
+                        <a class="flex items-center gap-3 group relative z-50" href="./index.html">
                             <div class="h-10 w-auto transition-transform duration-300 group-hover:scale-105">
-                                <img src="./Haviarchitecture/Logo.jpg" alt="Susun Ruang" class="h-full w-auto object-contain">
+                                <img src="./Haviarchitecture/Logo.jpg" alt="Havior Architecture" class="h-full w-auto object-contain">
                             </div>
                         </a>
                         <div class="hidden md:flex items-center gap-4 bg-[#F0F0F0] px-2 py-2 rounded-2xl shadow-neumorph-inset border border-white/30">
                             <nav class="flex items-center gap-2">
-                                <button class="px-6 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 text-[#2C2C2C]/70 hover:text-primary hover:shadow-neumorph-outset">Projects</button>
-                                <button class="px-6 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 text-[#2C2C2C]/70 hover:text-primary hover:shadow-neumorph-outset">Paket Jasa</button>
-                                <button class="px-6 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 text-[#2C2C2C]/70 hover:text-primary hover:shadow-neumorph-outset">Kalkulator RAB</button>
+                                <button class="px-6 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 text-[#2C2C2C]/70 hover:text-primary hover:shadow-neumorph-outset"><a href="#featured-projects">Projects</a></button>
+                                <button class="px-6 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 text-[#2C2C2C]/70 hover:text-primary hover:shadow-neumorph-outset"><a href="#paket-jasa">Kalkulator RAB</a></button>
+                                <button class="px-6 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 text-[#2C2C2C]/70 hover:text-primary hover:shadow-neumorph-outset"><a href="#about">About</a></button>
                             </nav>
-                            <a href="https://wa.me/62822260024094" target="_blank" rel="noopener noreferrer">
+                            <a href="https://wa.me/6285645259797?text=Halo%20Saya%20mau%20order%20untuk%20paket%20Desain%20%2C%2C" target="_blank" rel="noopener noreferrer">
                                 <button class="inline-flex items-center justify-center font-bold ring-offset-background transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary shadow-neumorph-outset hover:shadow-neumorph-hover hover:brightness-105 active:shadow-neumorph-inset h-10 rounded-lg px-4 text-xs ml-2 gap-2 text-[#2C2C2C]">
                                     Let's Talk 
                                     <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -199,7 +253,7 @@
                     </div>
                 </header>
                 <main class="pt-0">
-                    <section class="relative min-h-screen pt-36 pb-20 px-4 md:px-8 bg-white overflow-hidden flex items-center">
+                    <section id="top" class="relative min-h-screen pt-36 pb-20 px-4 md:px-8 bg-white overflow-hidden flex items-center">
                         <div class="container mx-auto max-w-7xl">
                             <div class="rounded-2xl shadow-neumorph-outset text-[#2C2C2C] hover:shadow-neumorph-hover cursor-pointer transition-all duration-300 ease-in-out p-8 md:p-16 relative z-10 overflow-visible border-none bg-[#F0F0F0]" style="transform: none;">
                                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
@@ -220,7 +274,7 @@
                                         </h1>
                                         <p class="text-xl text-[#2C2C2C]/70 mb-12 max-w-lg leading-relaxed font-medium">We craft contemplative and tropical architectural concepts, focusing on spatial narrative, atmosphere, and human experience</p>
                                         <div class="flex flex-col sm:flex-row gap-6 w-full sm:w-auto">
-                                            <a href="https://susunruang.com/projects">
+                                            <a href="./OurProject/index.html">
                                                 <button class="inline-flex items-center justify-center font-bold ring-offset-background duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 active:text-primary h-14 rounded-xl px-10 w-full sm:w-auto text-lg bg-green text-[#2C2C2C] shadow-neumorph-outset hover:shadow-neumorph-hover active:shadow-neumorph-inset active:scale-95 transition-all">
                                                     View Projects
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right ml-3 w-5 h-5">
@@ -229,7 +283,7 @@
                                                     </svg>
                                                 </button>
                                             </a>
-                                            <a href="https://susunruang.com/kalkulator-rab">
+                                            <a href="#paket-jasa">
                                                 <button class="inline-flex items-center justify-center font-bold ring-offset-background transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 green-button text-white shadow-neumorph-outset hover:shadow-neumorph-hover active:shadow-neumorph-inset h-14 rounded-xl px-10 w-full sm:w-auto text-lg">Estimate Cost</button>
                                             </a>
                                         </div>
@@ -266,7 +320,7 @@
                                     </div>
                                     <h2 class="text-4xl md:text-5xl font-bold text-black">Featured Projects</h2>
                                 </div>
-                                <a href="https://susunruang.com/projects">
+                                <a href="./OurProject/index.html">
                                     <button class="items-center justify-center rounded-xl text-sm font-bold ring-offset-background transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-[#F0F0F0] text-[#2C2C2C] shadow-neumorph-outset hover:shadow-neumorph-hover active:shadow-neumorph-inset h-12 px-8 py-3 hidden md:flex gap-2">
                                         View All Projects 
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right w-4 h-4">
@@ -969,21 +1023,16 @@ Emerald Heritage Lounge dirancang sebagai interior yang bersikap tenang di tenga
                                                 <p class="text-[#2C2C2C]/80 mb-12 leading-relaxed text-lg font-medium">Ready to transform your space? Tell us about your vision. We're here to listen and create.</p>
                                                 <div class="space-y-10">
                                                     <div class="p-4 rounded-xl bg-[#F0F0F0]/10 shadow-neumorph-inset">
-                                                        <h4 class="font-bold text-sm uppercase mb-2 text-[#2C2C2C]/60">Studio</h4>
-                                                        <p class="text-lg font-bold">Jakarta, Indonesia</p>
+                                                        <h4 class="font-bold text-sm uppercase mb-2 text-[#2C2C2C]/60">Message</h4>
+                                                        <textarea id="message" class="flex w-full rounded-xl border-none bg-[#F0F0F0] px-4 py-3 text-[#2C2C2C] shadow-neumorph-inset placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary/50 disabled:cursor-not-allowed disabled:opacity-50 transition-all duration-300 min-h-[150px] text-base resize-vertical" placeholder="Enter your message here..."></textarea>
                                                     </div>
-                                                    <div class="p-4 rounded-xl bg-[#F0F0F0]/10 shadow-neumorph-inset">
-                                                        <h4 class="font-bold text-sm uppercase mb-2 text-[#2C2C2C]/60">Email</h4>
-                                                        <p class="text-lg font-bold">susunruang.arsitek@gmail.com</p>
-                                                    </div>
-                                                    <div class="pt-8">
-                                                        <a href="https://wa.me/6282260024094" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-6 py-3 bg-[#25D366] text-white rounded-full font-bold shadow-md hover:shadow-lg transition-all duration-300 cursor-pointer w-full justify-center text-primary font-bold shadow-lg" tabindex="0">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-phone w-5 h-5 fill-current">
-                                                                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
-                                                            </svg>
-                                                            <span>WhatsApp Consultation</span>
-                                                        </a>
-                                                    </div>
+                                                    <button
+                                                        id="waLink"
+                                                        type="button"
+                                                        class="inline-flex items-center gap-2 px-6 py-3 bg-[#25D366] text-white rounded-full font-bold w-full justify-center"
+                                                        >
+                                                        WhatsApp Consultation
+                                                    </button>
                                                 </div>
                                             </div>
                                             <div class="absolute -bottom-24 -left-24 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
@@ -994,22 +1043,10 @@ Emerald Heritage Lounge dirancang sebagai interior yang bersikap tenang di tenga
                                             </div>
                                         </div>
                                         <div class="p-12 md:p-16 bg-[#F0F0F0]">
-                                            <form class="space-y-8">
-                                                <div class="space-y-3">
-                                                    <label class="text-xs font-bold uppercase tracking-wider text-[#2C2C2C]/50 ml-1">Name</label>
-                                                    <input class="flex w-full rounded-xl border-none bg-[#F0F0F0] px-4 py-2 text-[#2C2C2C] shadow-neumorph-inset placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary/50 disabled:cursor-not-allowed disabled:opacity-50 transition-all duration-300 h-14 text-base" placeholder="Your Name">
-                                                </div>
-                                                <div class="space-y-3">
-                                                    <label class="text-xs font-bold uppercase tracking-wider text-[#2C2C2C]/50 ml-1">Email</label>
-                                                    <input type="email" class="flex w-full rounded-xl border-none bg-[#F0F0F0] px-4 py-2 text-[#2C2C2C] shadow-neumorph-inset placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary/50 disabled:cursor-not-allowed disabled:opacity-50 transition-all duration-300 h-14 text-base" placeholder="your@email.com">
-                                                </div>
-                                                <div class="space-y-3">
-                                                    <label class="text-xs font-bold uppercase tracking-wider text-[#2C2C2C]/50 ml-1">Message</label>
-                                                    <textarea class="flex w-full rounded-xl border-none bg-[#F0F0F0] px-4 py-3 text-[#2C2C2C] shadow-neumorph-inset placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary/50 disabled:cursor-not-allowed disabled:opacity-50 resize-y transition-all duration-300 min-h-[150px] text-base" rows="4" placeholder="Tell us about your project..."></textarea>
-                                                </div>
-                                                <div class="pt-4">
-                                                    <button class="inline-flex items-center justify-center font-bold ring-offset-background transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:shadow-neumorph-hover active:shadow-neumorph-inset active:text-primary h-14 rounded-xl px-10 text-base w-full bg-[#2C2C2C] text-[#F0F0F0] hover:bg-[#1a1a1a] shadow-neumorph-outset" type="submit">Send Message</button>
-                                                </div>
+                                            <h2 class="text-3xl font-bold mb-6 tracking-tight text-[#2C2C2C]">
+                                                <span>Our Scanning QR Code</span>
+                                            </h2>
+                                            <img src="./Haviarchitecture/HAVIOURARCHITECTURE.png">
                                             </form>
                                         </div>
                                     </div>
@@ -1024,7 +1061,7 @@ Emerald Heritage Lounge dirancang sebagai interior yang bersikap tenang di tenga
                             <div class="grid md:grid-cols-4 gap-12">
                                 <div class="md:col-span-2">
                                     <h2 class="text-3xl font-bold mb-6 tracking-tight text-[#2C2C2C]">
-                                        SUSUN<span class="text-primary">RUANG</span>
+                                        HAVIOUR<span class="text-primary">ARCHITECTURE</span>
                                     </h2>
                                     <p class="text-[#2C2C2C]/70 max-w-sm leading-relaxed mb-8 font-medium">A minimalist design studio dedicated to creating spaces of clarity, purpose, and enduring beauty.</p>
                                 </div>
@@ -1032,23 +1069,20 @@ Emerald Heritage Lounge dirancang sebagai interior yang bersikap tenang di tenga
                                     <h4 class="font-bold text-sm uppercase tracking-widest mb-6 text-primary shadow-neumorph-inset inline-block px-3 py-1 rounded-lg">Explore</h4>
                                     <ul class="space-y-4">
                                         <li>
-                                            <a href="https://susunruang.com/projects" class="text-[#2C2C2C]/70 hover:text-primary font-medium transition-colors hover:shadow-neumorph-outset px-2 py-1 rounded-md inline-block">Projects</a>
+                                            <a href="#featured-projects" class="text-[#2C2C2C]/70 hover:text-primary font-medium transition-colors hover:shadow-neumorph-outset px-2 py-1 rounded-md inline-block">Projects</a>
                                         </li>
                                         <li>
-                                            <a href="https://susunruang.com/kalkulator-rab" class="text-[#2C2C2C]/70 hover:text-primary font-medium transition-colors hover:shadow-neumorph-outset px-2 py-1 rounded-md inline-block">Kalkulator RAB</a>
+                                            <a href="#paket-jasa" class="text-[#2C2C2C]/70 hover:text-primary font-medium transition-colors hover:shadow-neumorph-outset px-2 py-1 rounded-md inline-block">Kalkulator RAB</a>
                                         </li>
                                         <li>
-                                            <a href="https://susunruang.com/daftar-harga" class="text-[#2C2C2C]/70 hover:text-primary font-medium transition-colors hover:shadow-neumorph-outset px-2 py-1 rounded-md inline-block"></a>
-                                        </li>
-                                        <li>
-                                            <a href="https://susunruang.com/admin/login" class="text-[#2C2C2C]/40 hover:text-[#2C2C2C] transition-colors text-xs px-2 py-1">Admin Access</a>
+                                            <a href="#contact" class="text-[#2C2C2C]/70 hover:text-primary font-medium transition-colors hover:shadow-neumorph-outset px-2 py-1 rounded-md inline-block">Kontak</a>
                                         </li>
                                     </ul>
                                 </div>
                                 <div>
                                     <h4 class="font-bold text-sm uppercase tracking-widest mb-6 text-primary shadow-neumorph-inset inline-block px-3 py-1 rounded-lg">Connect</h4>
                                     <div class="flex gap-4">
-                                        <a href="https://www.instagram.com/susunruang.studio/" target="_blank" rel="noopener noreferrer" class="w-14 h-14 rounded-2xl bg-[#F0F0F0] shadow-neumorph-outset flex items-center justify-center text-primary hover:text-primary hover:shadow-neumorph-hover active:shadow-neumorph-inset transition-all duration-300 transform hover:scale-105">
+                                        <a href="https://www.instagram.com/haviorarchitecture/" target="_blank" rel="noopener noreferrer" class="w-14 h-14 rounded-2xl bg-[#F0F0F0] shadow-neumorph-outset flex items-center justify-center text-primary hover:text-primary hover:shadow-neumorph-hover active:shadow-neumorph-inset transition-all duration-300 transform hover:scale-105">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-instagram">
                                                 <rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect>
                                                 <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
@@ -1060,9 +1094,9 @@ Emerald Heritage Lounge dirancang sebagai interior yang bersikap tenang di tenga
                             </div>
                         </div>
                         <div class="flex flex-col md:flex-row justify-between items-center gap-6 px-4">
-                            <p class="text-xs text-[#2C2C2C]/50 font-bold uppercase tracking-wider">© 2026 Susun Ruang Studio.</p>
+                            <p class="text-xs text-[#2C2C2C]/50 font-bold uppercase tracking-wider">© haviorarchitecture 2026.</p>
                             <button class="inline-flex items-center justify-center font-bold ring-offset-background transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-[#F0F0F0] text-[#2C2C2C] shadow-neumorph-outset hover:shadow-neumorph-hover active:shadow-neumorph-inset active:text-primary rounded-lg gap-2 text-xs uppercase tracking-widest px-6 h-10">
-                                Back to Top
+                                <a href="#top" >Back to Top </a>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-up">
                                     <path d="m5 12 7-7 7 7"></path>
                                     <path d="M12 19V5"></path>
