@@ -103,6 +103,13 @@
                     const timelineSpan = document.querySelector('[data-field="timeline"]')
                     if (timelineSpan) timelineSpan.textContent = timeline
                     
+                    // Update luas (land area) in summary
+                    const luasValue = luasLahanInput?.value?.trim() ? luasLahanInput.value + ' m²' : '0 m²'
+                    const luasSummary = document.querySelector('[data-summary="luas"]')
+                    if (luasSummary) luasSummary.textContent = luasValue
+                    const luasField = document.querySelector('[data-field="luas"]')
+                    if (luasField) luasField.textContent = luasLahanInput?.value?.trim() ? luasLahanInput.value + ' m²' : '-'
+
                     // Update budget
                     const budgetMin = budgetMinInput?.value?.trim() ? parseInt(budgetMinInput.value) : null
                     const budgetMax = budgetMaxInput?.value?.trim() ? parseInt(budgetMaxInput.value) : null
@@ -286,6 +293,9 @@
                 }
                 if (budgetMaxInput) {
                     budgetMaxInput.addEventListener('input', updateProjectInfo)
+                }
+                if (luasLahanInput) {
+                    luasLahanInput.addEventListener('input', updateProjectInfo)
                 }
                 
                 function updateRadioButtons() {
@@ -834,7 +844,7 @@ Emerald Heritage Lounge dirancang sebagai interior yang bersikap tenang di tenga
                                         </div>
                                     </div>
                                     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                                        <div class="space-y-8">
+                                        <div class="space-y-8 mb-4">
                                             <div class="space-y-6 bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
                                                 <div class="flex items-center gap-3 mb-2">
                                                     <span class="w-6 h-6 rounded-full bg-army-green text-white text-xs flex items-center justify-center font-bold">1</span>
@@ -849,7 +859,7 @@ Emerald Heritage Lounge dirancang sebagai interior yang bersikap tenang di tenga
                                                             </svg>
                                                             Lokasi Proyek
                                                         </label>
-                                                        <input type="text" id="lokasi" placeholder="Contoh: Jakarta Selatan" class="w-full px-4 py-2.5 bg-gray-50 border rounded-xl text-sm focus:outline-none focus:ring-2 transition-all border-gray-200 focus:border-army-green focus:ring-army-green/20" value=""
+                                                        <input type="text" id="lokasi" placeholder="Contoh: Jakarta Selatan" class="w-full px-4 py-2.5 bg-gray-50 border rounded-xl text-sm focus:outline-none focus:ring-2 transition-all border-gray-200 focus:border-army-green focus:ring-army-green/20" value="">
                                                         <p class="text-[10px] text-gray-400">Kota atau daerah lokasi pembangunan</p>
                                                     </div>
                                                     <div class="space-y-1.5 w-full">
@@ -864,7 +874,7 @@ Emerald Heritage Lounge dirancang sebagai interior yang bersikap tenang di tenga
                                                             Luas Lahan
                                                         </label>
                                                         <div class="relative">
-                                                            <input type="number" id="luasLahan" placeholder="0" class="w-full px-4 py-2.5 bg-gray-50 border rounded-xl text-sm focus:outline-none focus:ring-2 transition-all pr-10 border-gray-200 focus:border-army-green focus:ring-army-green/20" value=""
+                                                            <input type="number" id="luasLahan" placeholder="0" class="w-full px-4 py-2.5 bg-gray-50 border rounded-xl text-sm focus:outline-none focus:ring-2 transition-all pr-10 border-gray-200 focus:border-army-green focus:ring-army-green/20" value="">
                                                             <span class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 text-xs font-bold pointer-events-none">m²</span>
                                                         </div>
                                                         <p class="text-[10px] text-gray-400">Total luas tanah yang tersedia (m²)</p>
@@ -884,7 +894,7 @@ Emerald Heritage Lounge dirancang sebagai interior yang bersikap tenang di tenga
                                                             </div>
                                                             <div class="relative">
                                                                 <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs font-bold">Rp</span>
-                                                                <input type="number" id="budgetMax" placeholder="Max" class="w-full pl-9 pr-4 py-2.5 bg-gray-50 border rounded-xl text-sm focus:outline-none focus:ring-2 transition-all border-gray-200 focus:border-army-green focus:ring-army-green/20" value=""
+                                                                <input type="number" id="budgetMax" placeholder="Max" class="w-full pl-9 pr-4 py-2.5 bg-gray-50 border rounded-xl text-sm focus:outline-none focus:ring-2 transition-all border-gray-200 focus:border-army-green focus:ring-army-green/20" value="">
                                                             </div>
                                                         </div>
                                                         <div class="flex justify-between items-start">
@@ -953,11 +963,7 @@ Emerald Heritage Lounge dirancang sebagai interior yang bersikap tenang di tenga
                                                             Total Luas Bangunan (m²)
                                                         </label>
                                                         <div class="relative group">
-                                                            <input type="text" id="laasInput" inputmode="numeric" placeholder="0" class="
-                          w-full px-6 py-4 bg-[#F0F0F0] rounded-xl text-[#2C2C2C] font-bold text-xl
-                          shadow-neumorph-inset border-none focus:ring-0
-                          pr-16 placeholder:text-gray-300
-                        " value="">
+                                                                                                                        <input type="text" id="laasInput" inputmode="numeric" placeholder="0" class="w-full px-6 py-4 bg-[#F0F0F0] rounded-xl text-[#2C2C2C] font-bold text-xl shadow-neumorph-inset border-none focus:ring-0 pr-16 placeholder:text-gray-300" value="">
                                                             <span class="absolute right-6 top-1/2 -translate-y-1/2 text-[#2C2C2C]/40 font-bold pointer-events-none">m²</span>
                                                         </div>
                                                     </div>
@@ -1118,6 +1124,13 @@ Emerald Heritage Lounge dirancang sebagai interior yang bersikap tenang di tenga
                                                                 <path d="M3 10h18"></path>
                                                             </svg>
                                                             <span class="truncate" data-field="timeline">-</span>
+                                                        </div>
+                                                        <div class="flex items-center gap-3 text-sm font-medium text-[#2C2C2C]" id="projectArea">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-ruler text-primary shrink-0">
+                                                                <path d="M21 3v7h-7"></path>
+                                                                <path d="M3 21h7v-7"></path>
+                                                            </svg>
+                                                            <span class="truncate" data-field="luas">-</span>
                                                         </div>
                                                         <div class="flex items-center gap-3 text-sm font-medium text-[#2C2C2C]" id="projectBudget">
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-wallet text-primary shrink-0">
