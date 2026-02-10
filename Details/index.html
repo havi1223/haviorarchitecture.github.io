@@ -29,6 +29,78 @@
             }
             ;
         </script>
+        <script>
+            const params = new URLSearchParams(window.location.search);
+            const projectId = params.get("project");
+        </script>
+        <script>
+            fetch("../Haviarchitecture/project.json")
+            .then(res => res.json())
+            .then(projects => {
+                const params = new URLSearchParams(window.location.search);
+                const projectId = params.get("project"); // ⬅️ FIX DI SINI
+
+                if (!projectId) {
+                console.warn("Param project tidak ada di URL");
+                return;
+                }
+
+                const project = projects.find(p => p.id === projectId);
+                if (!project) {
+                console.warn("Project tidak ditemukan di JSON");
+                return;
+                }
+
+                // breadcrumb category
+                const categoryLink = document.getElementById("category-link");
+                categoryLink.textContent = project.categoryLabel;
+                categoryLink.href = `../OurProject/?search=${encodeURIComponent(project.category)}`;
+
+                // category
+                document.getElementById("project-category").textContent = project.categoryLabel;
+                // date
+                document.getElementById("project-date").textContent = project.year;
+                // content
+                document.getElementById("project-content").textContent = project.description;
+                // location
+                document.getElementById("project-location-text").textContent = project.location;
+                // title
+                document.getElementById("project-title").textContent = project.title;
+
+                document.getElementById("project-title-main").textContent = project.title;
+                // gallery
+                const gallery = document.getElementById("project-gallery");
+                gallery.innerHTML = "";
+
+                // safety check
+                if (!project.attachments || project.attachments.length === 0) return;
+
+                project.attachments.forEach((img, index) => {
+                const isHero = index === 0;
+
+                const wrapper = document.createElement("div");
+                wrapper.className = `
+                    relative overflow-hidden rounded-2xl cursor-pointer group
+                    bg-gray-100 border border-gray-100 shadow-sm
+                    ${isHero ? "md:col-span-2 aspect-[16/9]" : "aspect-[4/3]"}
+                `;
+
+                wrapper.innerHTML = `
+                    <img 
+                    src="./HaveDetails_files/${img.src}"
+                    alt="${img.alt || project.title}"
+                    class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    loading="lazy"
+                    >
+                    <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors"></div>
+                `;
+
+                gallery.appendChild(wrapper);
+                });
+            })
+            .catch(err => console.error("Fetch error:", err));
+        </script>
+
         <script type="module">
             const observer = new MutationObserver( (mutations) => {
                 for (const mutation of mutations) {
@@ -164,7 +236,7 @@
             <div class="bg-white min-h-screen font-sans">
                 <header class="fixed top-4 left-4 right-4 z-50 transition-all duration-300 rounded-2xl bg-transparent py-6 px-4" style="transform: none;">
                     <div class="container mx-auto flex justify-between items-center">
-                        <a class="flex items-center gap-3 group relative z-50" href="https://susunruang.com/">
+                        <a class="flex items-center gap-3 group relative z-50" href="../">
                             <div class="h-10 w-auto transition-transform duration-300 group-hover:scale-105">
                                 <img src="../Haviarchitecture/Logo.jpg" alt="Havior Architecture" class="h-full w-auto object-contain">
                             </div>
@@ -196,47 +268,42 @@
                 <main class="pt-[100px] min-h-screen">
                     <div class="relative">
                         <article class="container mx-auto px-6 pb-20">
-                            <div class="flex items-center gap-2 text-sm text-gray-500 mb-8 overflow-x-auto whitespace-nowrap">
-                                <a class="hover:text-black transition-colors" href="https://susunruang.com/projects">Projects</a>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right">
+                            <div id="category-menu" class="flex items-center gap-2 text-sm text-gray-500 mb-8 overflow-x-auto whitespace-nowrap">
+                                <a class="hover:text-black transition-colors" href="../#featured-projects">Projects</a>
+
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <path d="m9 18 6-6-6-6"></path>
                                 </svg>
-                                <a class="hover:text-black transition-colors" href="https://susunruang.com/projects?category=Interior">Interior</a>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right">
+
+                                <a id="category-link" class="hover:text-black transition-colors" href="../OurProject/"></a>
+
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <path d="m9 18 6-6-6-6"></path>
                                 </svg>
-                                <span class="text-black font-medium">Apartment Lobby, Emerald Heritage Lounge</span>
+
+                                <span id="project-title" class="text-black font-medium"></span>
                             </div>
                             <div class="flex flex-col lg:flex-row gap-12 mb-16">
                                 <div class="lg:w-1/3 space-y-8">
                                     <div>
-                                        <h1 class="text-4xl md:text-5xl font-bold text-gray-900 leading-tight mb-4">Apartment Lobby, Emerald Heritage Lounge</h1>
+                                        <h1 id="project-title-main"class="text-4xl md:text-5xl font-bold text-gray-900 leading-tight mb-4"></h1>
                                         <div class="flex flex-wrap items-center gap-4 text-sm text-gray-500">
-                                            <span class="bg-gray-100 px-3 py-1 rounded-full font-medium text-gray-900 border border-gray-200">Interior</span>
+                                            <span id="project-category" class="bg-gray-100 px-3 py-1 rounded-full font-medium text-gray-900 border border-gray-200">
+                                            </span>
                                             <span class="flex items-center gap-1.5">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calendar">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+                                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                    class="lucide lucide-calendar">
                                                     <path d="M8 2v4"></path>
                                                     <path d="M16 2v4"></path>
                                                     <rect width="18" height="18" x="3" y="4" rx="2"></rect>
                                                     <path d="M3 10h18"></path>
                                                 </svg>
-                                                February 2026
+                                                <span id="project-date"></span>
                                             </span>
                                         </div>
                                     </div>
-                                    <div class="prose prose-lg text-gray-600 leading-relaxed whitespace-pre-line max-w-none">Emerald Heritage Lounge
-
-Ruang ini dirancang sebagai sebuah jeda—sebuah interior yang tidak sekadar berfungsi sebagai lounge, tetapi sebagai pengalaman emosional yang menenangkan. Emerald Heritage Lounge memaknai kemewahan bukan melalui kemegahan berlebihan, melainkan melalui ketenangan, kedalaman warna, dan kejujuran material.
-
-Bahasa ruang dibentuk oleh geometri melengkung yang mengalir, hadir pada dinding dan plafon sebagai upaya melembutkan batas serta menghilangkan kesan rigid. Kurva-kurva ini membimbing pergerakan secara intuitif, menciptakan sirkulasi yang natural dan ritme ruang yang tenang. Tidak ada sudut tajam yang mendominasi—ruang memilih untuk bersikap ramah dan merangkul.
-
-Palet hijau zamrud menjadi elemen utama yang membangun atmosfer kontemplatif. Warna ini merepresentasikan keseimbangan antara alam dan kemewahan klasik, diperkuat oleh material kulit coklat tua, kayu gelap, dan lantai batu alam yang menghadirkan kesan hangat, berat, dan membumi. Setiap material dipilih untuk menua dengan indah, membentuk karakter ruang yang bertahan melampaui tren.
-
-Plafon aksen dengan tekstur artistik berwarna keemasan berfungsi sebagai focal point visual—sebuah elemen dramatik yang tidak mendominasi, namun memberi identitas kuat pada ruang. Cahaya hangat tersembunyi mengikuti kontur plafon, menciptakan efek melayang dan mempertegas kedalaman ruang tanpa silau, menghadirkan ambience yang intim dan bersahaja.
-
-Tata furnitur disusun dalam kelompok-kelompok kecil, membentuk ruang duduk yang privat tanpa sekat masif. Tanaman indoor berdaun lebar digunakan sebagai elemen transisi, memperhalus skala ruang sekaligus memperkuat hubungan visual dengan alam. Ruang publik ini kemudian terasa personal—terbuka, namun tetap terlindungi.
-
-Emerald Heritage Lounge dirancang sebagai interior yang bersikap tenang di tengah dinamika. Sebuah ruang yang mengundang untuk berhenti sejenak, duduk, dan merasakan waktu berjalan lebih lambat—di mana kemewahan hadir bukan untuk dipamerkan, melainkan untuk dirasakan.</div>
+                                    <div id="project-content" class="prose prose-lg text-gray-600 leading-relaxed whitespace-pre-line max-w-none"> </div>
                                     <div class="grid grid-cols-2 gap-y-4 gap-x-8 py-6 border-t border-b border-gray-100">
                                         <div>
                                             <span class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Client</span>
@@ -250,46 +317,22 @@ Emerald Heritage Lounge dirancang sebagai interior yang bersikap tenang di tenga
                                         </div>
                                         <div>
                                             <span class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Location</span>
-                                            <span class="text-sm font-medium text-gray-900 flex items-center gap-2">
+                                            <span 
+                                                id="project-location"
+                                                class="text-sm font-medium text-gray-900 flex items-center gap-2">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-map-pin">
                                                     <path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"></path>
                                                     <circle cx="12" cy="10" r="3"></circle>
                                                 </svg>
-                                                Jakarta Utara
+                                                <span id="project-location-text"></span>
                                             </span>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="lg:w-2/3">
-                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                        <div class="relative overflow-hidden rounded-2xl cursor-pointer group bg-gray-100 border border-gray-100 shadow-sm md:col-span-2 aspect-[16/9]" style="opacity: 1;">
-                                            <img src="./HaveDetails_files/1770351693758-dv9uj1hprg.png" alt="Apartment Lobby, Emerald Heritage Lounge" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
-                                            <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors"></div>
-                                        </div>
-                                        <div class="relative overflow-hidden rounded-2xl cursor-pointer group bg-gray-100 border border-gray-100 shadow-sm aspect-[4/3]" style="opacity: 1;">
-                                            <img src="./HaveDetails_files/1770351690223-8hwbkpm4syp.png" alt="Apartment Lobby, Emerald Heritage Lounge" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
-                                            <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors"></div>
-                                        </div>
-                                        <div class="relative overflow-hidden rounded-2xl cursor-pointer group bg-gray-100 border border-gray-100 shadow-sm aspect-[4/3]" style="opacity: 1;">
-                                            <img src="./HaveDetails_files/1770351691448-n4gl2ginkaj.png" alt="Apartment Lobby, Emerald Heritage Lounge" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
-                                            <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors"></div>
-                                        </div>
-                                        <div class="relative overflow-hidden rounded-2xl cursor-pointer group bg-gray-100 border border-gray-100 shadow-sm aspect-[4/3]" style="opacity: 1;">
-                                            <img src="./HaveDetails_files/1770351692260-ymhkk5cgnn.png" alt="Apartment Lobby, Emerald Heritage Lounge" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
-                                            <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors"></div>
-                                        </div>
-                                        <div class="relative overflow-hidden rounded-2xl cursor-pointer group bg-gray-100 border border-gray-100 shadow-sm aspect-[4/3]" style="opacity: 1;">
-                                            <img src="./HaveDetails_files/1770351693051-y5imhwl9hl.png" alt="Apartment Lobby, Emerald Heritage Lounge" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
-                                            <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors"></div>
-                                        </div>
-                                        <div class="relative overflow-hidden rounded-2xl cursor-pointer group bg-gray-100 border border-gray-100 shadow-sm aspect-[4/3]" style="opacity: 1;">
-                                            <img src="./HaveDetails_files/1770351694848-6faij4no96i.png" alt="Apartment Lobby, Emerald Heritage Lounge" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
-                                            <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors"></div>
-                                        </div>
-                                        <div class="relative overflow-hidden rounded-2xl cursor-pointer group bg-gray-100 border border-gray-100 shadow-sm aspect-[4/3]" style="opacity: 1;">
-                                            <img src="./HaveDetails_files/1770351695863-r9xs3xdvbci.png" alt="Apartment Lobby, Emerald Heritage Lounge" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
-                                            <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors"></div>
-                                        </div>
+                                    <div 
+                                        id="project-gallery"
+                                        class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     </div>
                                 </div>
                             </div>

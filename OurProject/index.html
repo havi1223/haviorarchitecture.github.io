@@ -31,42 +31,98 @@
         </script>
         <script>
             document.addEventListener("DOMContentLoaded", () => {
+            const grid = document.getElementById("project-grid");
             const input = document.getElementById("search-input");
-            const cards = document.querySelectorAll(".shadow-neumorph-outset");
-            const projects = document.querySelectorAll("#project-grid > div");
 
-            function filterProjects(keyword) {
-                keyword = keyword.toLowerCase().trim();
+            let projects = [];
 
-                if (keyword === "") {
-                projects.forEach(p => p.style.display = "");
+            // ===============================
+            // LOAD JSON
+            // ===============================
+            fetch("../Haviarchitecture/project.json")
+                .then(res => {
+                if (!res.ok) throw new Error("JSON tidak ditemukan");
+                return res.json();
+                })
+                .then(data => {
+                projects = data;
+                renderProjects(projects);
+
+                // auto search dari URL
+                const params = new URLSearchParams(window.location.search);
+                const searchParam = params.get("search");
+                if (searchParam) {
+                    input.value = searchParam;
+                    filterProjects(searchParam);
+                }
+                })
+                .catch(err => {
+                console.error(err);
+                grid.innerHTML = `<p class="text-red-500">Failed to load projects</p>`;
+                });
+
+            // ===============================
+            // RENDER CARD
+            // ===============================
+            function renderProjects(data) {
+                grid.innerHTML = "";
+
+                if (data.length === 0) {
+                grid.innerHTML = `<p class="col-span-full text-center text-gray-400">
+                    No projects found
+                </p>`;
                 return;
                 }
 
-                projects.forEach(p => p.style.display = "none");
+                data.forEach(item => {
+                const div = document.createElement("div");
+                div.className = "shadow-neumorph-outset p-6 rounded-2xl bg-white";
 
-                cards.forEach(card => {
-                const project = card.closest("#project-grid > div");
-                if (!project) return; // ⛔ WAJIB ADA
+                div.innerHTML = `
+                    <a href="../Details?project=${item.id}" class="block group">
+                        <div class="relative w-full aspect-[4/3] overflow-hidden rounded-xl bg-gray-100 mb-6">
+                            <img
+                                src="../Haviarchitecture/${item.image}"
+                                alt="${item.title}"
+                                class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                            />
+                        </div>
+                    <span
+                        class="inline-block text-xs px-3 py-1 rounded-full mb-3"
+                        style="background:${item.categoryColor}">
+                        ${item.categoryLabel}
+                    </span>
 
-                const text = card.innerText.toLowerCase();
-                if (text.includes(keyword)) {
-                    project.style.display = "";
-                }
+                    <h3 class="text-lg font-bold text-gray-900 mb-1">
+                        ${item.title}
+                    </h3>
+
+                    <p class="text-sm text-gray-600 flex items-center gap-1">
+                        📍 ${item.location}
+                    </p>
+                    </a>
+                `;
+
+                grid.appendChild(div);
                 });
             }
 
-            input.addEventListener("input", () => {
-                filterProjects(input.value);
-            });
+            // ===============================
+            // SEARCH
+            // ===============================
+            function filterProjects(keyword) {
+                const result = projects.filter(item =>
+                `${item.title} ${item.categoryLabel} ${item.location}`
+                    .toLowerCase()
+                    .includes(keyword.toLowerCase())
+                );
 
-            // auto search dari URL
-            const params = new URLSearchParams(window.location.search);
-            const searchParam = params.get("search");
-            if (searchParam) {
-                input.value = searchParam;
-                filterProjects(searchParam);
+                renderProjects(result);
             }
+
+            input.addEventListener("input", e => {
+                filterProjects(e.target.value);
+            });
             });
         </script>
         <script type="module">
@@ -253,448 +309,9 @@
                                 </div>
                             </div>
                         </div>
-                        <div id="project-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
-                            <div style="opacity: 1; transform: none;">
-                                <div class="relative rounded-2xl shadow-neumorph-outset border-none bg-white text-[#2C2C2C] p-0 hover:shadow-neumorph-hover transition-all duration-300 ease-in-out h-full flex flex-col group overflow-hidden cursor-pointer">
-                                    <div class="relative aspect-[4/3] overflow-hidden m-3 rounded-[1.25rem] shadow-neumorph-inset bg-white">
-                                        <img src="./index_files/1770540468275-0zb001dkoys.png" alt="LPTQ, Kalimantan" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy">
-                                        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300"></div>
-                                        <div class="absolute top-4 right-4 w-10 h-10 bg-white/90 backdrop-blur-md rounded-xl flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-2 group-hover:translate-y-0 shadow-neumorph-outset z-10 text-[#2C2C2C]">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-up-right w-5 h-5">
-                                                <path d="M7 7h10v10"></path>
-                                                <path d="M7 17 17 7"></path>
-                                            </svg>
-                                        </div>
-                                        <div class="absolute bottom-4 left-4 z-10">
-                                            <span class="px-4 py-2 bg-white/95 backdrop-blur-md text-[#A8E6CF] text-[10px] font-black uppercase tracking-widest rounded-lg shadow-neumorph-outset border border-white/20">Arsitek</span>
-                                        </div>
-                                    </div>
-                                    <div class="p-6 pt-2 flex flex-col flex-grow">
-                                        <h3 class="text-xl font-bold text-[#2C2C2C] mb-3 group-hover:text-primary transition-colors line-clamp-1">LPTQ, Kalimantan</h3>
-                                        <p class="text-sm text-[#2C2C2C]/60 line-clamp-2 leading-relaxed mb-6 flex-grow font-medium">Minimalist residential project focused on open spaces and natural light.</p>
-                                        <div class="mt-auto pt-4 border-t border-[#D1D1D1]/40 flex justify-between items-center text-xs text-[#2C2C2C]/40 font-bold uppercase tracking-wider">
-                                            <span class="truncate max-w-[60%] flex items-center gap-1">Kalimantan</span>
-                                            <span>2024</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div style="opacity: 1; transform: none;">
-                                <div class="relative rounded-2xl shadow-neumorph-outset border-none bg-white text-[#2C2C2C] p-0 hover:shadow-neumorph-hover transition-all duration-300 ease-in-out h-full flex flex-col group overflow-hidden cursor-pointer">
-                                    <div class="relative aspect-[4/3] overflow-hidden m-3 rounded-[1.25rem] shadow-neumorph-inset bg-white">
-                                        <img src="./index_files/1770518627720-qwv8pweatzb.png" alt="MMHouse, Concrete Canopy House" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy">
-                                        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300"></div>
-                                        <div class="absolute top-4 right-4 w-10 h-10 bg-white/90 backdrop-blur-md rounded-xl flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-2 group-hover:translate-y-0 shadow-neumorph-outset z-10 text-[#2C2C2C]">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-up-right w-5 h-5">
-                                                <path d="M7 7h10v10"></path>
-                                                <path d="M7 17 17 7"></path>
-                                            </svg>
-                                        </div>
-                                        <div class="absolute bottom-4 left-4 z-10">
-                                            <span class="px-4 py-2 bg-white/95 backdrop-blur-md text-[#A8E6CF] text-[10px] font-black uppercase tracking-widest rounded-lg shadow-neumorph-outset border border-white/20">Arsitek</span>
-                                        </div>
-                                    </div>
-                                    <div class="p-6 pt-2 flex flex-col flex-grow">
-                                        <a href="../Details/"><h3 class="text-xl font-bold text-[#2C2C2C] mb-3 group-hover:text-primary transition-colors line-clamp-1">MMHouse, Concrete Canopy House</h3></a>
-                                        <p class="text-sm text-[#2C2C2C]/60 line-clamp-2 leading-relaxed mb-6 flex-grow font-medium">Concrete Canopy House
-
-Concrete Canopy House dirancang sebagai hunian tropis kontemporer yang mengedepankan ketenangan, perlindungan, dan kejujuran material. Bangunan ini merespons iklim dan konteks tapak melalui komposisi massa yang tegas namun bersahaja, menghadirkan rumah yang tidak menonjol secara berlebihan, tetapi kuat dalam karakter dan pengalaman ruang.
-
-Massa bangunan disusun berlapis dengan pendekatan hierarki yang jelas antara ruang publik dan privat. Lantai dasar dirancang lebih terbuka dan terhubung langsung dengan ruang luar—halaman, kolam, dan area transisi—sementara lantai atas dibentuk sebagai volume beton masif yang lebih tertutup dan privat. Volume atas ini sekaligus berperan sebagai elemen pelindung, menciptakan bayangan dan menaungi aktivitas di bawahnya.
-
-Elemen kanopi beton menjadi gestur arsitektural utama. Selain berfungsi sebagai carport dan ruang transisi, kanopi ini memperkuat narasi rumah sebagai tempat berlindung dari panas dan hujan, sekaligus menegaskan karakter struktural bangunan. Hubungan antara massa, kanopi, dan ruang luar dirancang untuk menciptakan kenyamanan termal serta pengalaman ruang yang bertahap.
-
-Pendekatan material menekankan kejujuran dan ketahanan jangka panjang. Beton ekspos dipilih sebagai ekspresi struktur yang apa adanya—kokoh, tenang, dan minim ornamen—kemudian diseimbangkan dengan bidang plester putih untuk menghadirkan kontras visual yang bersih. Elemen kayu digunakan secara selektif pada area tertentu untuk memberi kehangatan, sementara roster beton berfungsi sebagai penyaring cahaya, udara, dan privasi.
-
-Bukaan dirancang vertikal dan terkontrol, memungkinkan cahaya alami masuk secara lembut tanpa mengorbankan privasi. Pada malam hari, pencahayaan hangat dari dalam bangunan membentuk suasana yang kontras dengan massa beton yang solid, menghadirkan kesan hunian yang hangat dan hidup di balik fasad yang tenang.
-
-Concrete Canopy House bukan sekadar objek arsitektur, melainkan ruang hidup yang dirancang untuk dihuni dalam jangka panjang—sebuah rumah yang menawarkan keteduhan, ketenangan, dan keseimbangan antara struktur, cahaya, dan lanskap.</p>
-                                        <div class="mt-auto pt-4 border-t border-[#D1D1D1]/40 flex justify-between items-center text-xs text-[#2C2C2C]/40 font-bold uppercase tracking-wider">
-                                            <span class="truncate max-w-[60%] flex items-center gap-1">Muara Bungo, Jambi</span>
-                                            <span>2024</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div style="opacity: 1; transform: none;">
-                                <div class="relative rounded-2xl shadow-neumorph-outset border-none bg-white text-[#2C2C2C] p-0 hover:shadow-neumorph-hover transition-all duration-300 ease-in-out h-full flex flex-col group overflow-hidden cursor-pointer">
-                                    <div class="relative aspect-[4/3] overflow-hidden m-3 rounded-[1.25rem] shadow-neumorph-inset bg-white">
-                                        <img src="./index_files/1770351693758-dv9uj1hprg.png" alt="Apartment Lobby, Emerald Heritage Lounge" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy">
-                                        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300"></div>
-                                        <div class="absolute top-4 right-4 w-10 h-10 bg-white/90 backdrop-blur-md rounded-xl flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-2 group-hover:translate-y-0 shadow-neumorph-outset z-10 text-[#2C2C2C]">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-up-right w-5 h-5">
-                                                <path d="M7 7h10v10"></path>
-                                                <path d="M7 17 17 7"></path>
-                                            </svg>
-                                        </div>
-                                        <div class="absolute bottom-4 left-4 z-10">
-                                            <span class="px-4 py-2 bg-white/95 backdrop-blur-md text-[#FF9F43] text-[10px] font-black uppercase tracking-widest rounded-lg shadow-neumorph-outset border border-white/20">Interior</span>
-                                        </div>
-                                    </div>
-                                    <div class="p-6 pt-2 flex flex-col flex-grow">
-                                        <h3 class="text-xl font-bold text-[#2C2C2C] mb-3 group-hover:text-primary transition-colors line-clamp-1">Apartment Lobby, Emerald Heritage Lounge</h3>
-                                        <p class="text-sm text-[#2C2C2C]/60 line-clamp-2 leading-relaxed mb-6 flex-grow font-medium">Emerald Heritage Lounge
-
-Ruang ini dirancang sebagai sebuah jeda—sebuah interior yang tidak sekadar berfungsi sebagai lounge, tetapi sebagai pengalaman emosional yang menenangkan. Emerald Heritage Lounge memaknai kemewahan bukan melalui kemegahan berlebihan, melainkan melalui ketenangan, kedalaman warna, dan kejujuran material.
-
-Bahasa ruang dibentuk oleh geometri melengkung yang mengalir, hadir pada dinding dan plafon sebagai upaya melembutkan batas serta menghilangkan kesan rigid. Kurva-kurva ini membimbing pergerakan secara intuitif, menciptakan sirkulasi yang natural dan ritme ruang yang tenang. Tidak ada sudut tajam yang mendominasi—ruang memilih untuk bersikap ramah dan merangkul.
-
-Palet hijau zamrud menjadi elemen utama yang membangun atmosfer kontemplatif. Warna ini merepresentasikan keseimbangan antara alam dan kemewahan klasik, diperkuat oleh material kulit coklat tua, kayu gelap, dan lantai batu alam yang menghadirkan kesan hangat, berat, dan membumi. Setiap material dipilih untuk menua dengan indah, membentuk karakter ruang yang bertahan melampaui tren.
-
-Plafon aksen dengan tekstur artistik berwarna keemasan berfungsi sebagai focal point visual—sebuah elemen dramatik yang tidak mendominasi, namun memberi identitas kuat pada ruang. Cahaya hangat tersembunyi mengikuti kontur plafon, menciptakan efek melayang dan mempertegas kedalaman ruang tanpa silau, menghadirkan ambience yang intim dan bersahaja.
-
-Tata furnitur disusun dalam kelompok-kelompok kecil, membentuk ruang duduk yang privat tanpa sekat masif. Tanaman indoor berdaun lebar digunakan sebagai elemen transisi, memperhalus skala ruang sekaligus memperkuat hubungan visual dengan alam. Ruang publik ini kemudian terasa personal—terbuka, namun tetap terlindungi.
-
-Emerald Heritage Lounge dirancang sebagai interior yang bersikap tenang di tengah dinamika. Sebuah ruang yang mengundang untuk berhenti sejenak, duduk, dan merasakan waktu berjalan lebih lambat—di mana kemewahan hadir bukan untuk dipamerkan, melainkan untuk dirasakan.</p>
-                                        <div class="mt-auto pt-4 border-t border-[#D1D1D1]/40 flex justify-between items-center text-xs text-[#2C2C2C]/40 font-bold uppercase tracking-wider">
-                                            <span class="truncate max-w-[60%] flex items-center gap-1">Jakarta Utara</span>
-                                            <span>2024</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div style="opacity: 1; transform: none;">
-                                <div class="relative rounded-2xl shadow-neumorph-outset border-none bg-white text-[#2C2C2C] p-0 hover:shadow-neumorph-hover transition-all duration-300 ease-in-out h-full flex flex-col group overflow-hidden cursor-pointer">
-                                    <div class="relative aspect-[4/3] overflow-hidden m-3 rounded-[1.25rem] shadow-neumorph-inset bg-white">
-                                        <img src="./index_files/1770107355307-92prlzauvdq.png" alt="EV House, Quiet Permeability House" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy">
-                                        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300"></div>
-                                        <div class="absolute top-4 right-4 w-10 h-10 bg-white/90 backdrop-blur-md rounded-xl flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-2 group-hover:translate-y-0 shadow-neumorph-outset z-10 text-[#2C2C2C]">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-up-right w-5 h-5">
-                                                <path d="M7 7h10v10"></path>
-                                                <path d="M7 17 17 7"></path>
-                                            </svg>
-                                        </div>
-                                        <div class="absolute bottom-4 left-4 z-10">
-                                            <span class="px-4 py-2 bg-white/95 backdrop-blur-md text-[#A8E6CF] text-[10px] font-black uppercase tracking-widest rounded-lg shadow-neumorph-outset border border-white/20">Arsitek</span>
-                                        </div>
-                                    </div>
-                                    <div class="p-6 pt-2 flex flex-col flex-grow">
-                                        <h3 class="text-xl font-bold text-[#2C2C2C] mb-3 group-hover:text-primary transition-colors line-clamp-1">EV House, Quiet Permeability House</h3>
-                                        <p class="text-sm text-[#2C2C2C]/60 line-clamp-2 leading-relaxed mb-6 flex-grow font-medium">Quiet Permeability House
-
-Bangunan ini dirancang sebagai rumah yang menjaga jarak dari hiruk-pikuk luar, namun tetap bernapas dan hidup dari dalam. Alih-alih menutup diri sepenuhnya, arsitektur memilih pendekatan permeabilitas tenang—membiarkan cahaya, udara, dan bayangan masuk secara terkontrol.
-
-Fasad depan dibentuk oleh lapisan sekunder berupa perforated metal dan dinding roster. Elemen ini berfungsi sebagai filter visual: menyaring pandangan dari luar tanpa menghilangkan koneksi dengan lingkungan. Rumah tidak memamerkan isi, tetapi juga tidak sepenuhnya menyembunyikan—ia bersikap cukup.
-
-Komposisi massa disusun horizontal dan rendah, mengikuti skala manusia dan konteks perumahan sekitar. Atap datar dengan overhang lebar menciptakan transisi lembut antara luar dan dalam, sekaligus melindungi dari iklim tropis. Ruang depan berfungsi sebagai zona buffer—area jeda sebelum masuk ke ruang privat.
-
-Material diekspresikan secara jujur:
-beton ekspos, baja hitam, roster, dan vegetasi tropis. Kekakuan material keras diseimbangkan oleh tanaman dan pencahayaan hangat, menghasilkan suasana yang tenang dan bersahaja, terutama saat malam hari ketika bangunan berubah menjadi lentera yang lembut.
-
-Secara keseluruhan, bangunan ini bukan tentang bentuk yang lantang, melainkan tentang arsitektur yang tahu kapan harus diam—memberi ruang bagi penghuninya untuk merasa aman, tenang, dan pulang sepenuhnya.</p>
-                                        <div class="mt-auto pt-4 border-t border-[#D1D1D1]/40 flex justify-between items-center text-xs text-[#2C2C2C]/40 font-bold uppercase tracking-wider">
-                                            <span class="truncate max-w-[60%] flex items-center gap-1">Jambi</span>
-                                            <span>2025</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div style="opacity: 1; transform: none;">
-                                <div class="relative rounded-2xl shadow-neumorph-outset border-none bg-white text-[#2C2C2C] p-0 hover:shadow-neumorph-hover transition-all duration-300 ease-in-out h-full flex flex-col group overflow-hidden cursor-pointer">
-                                    <div class="relative aspect-[4/3] overflow-hidden m-3 rounded-[1.25rem] shadow-neumorph-inset bg-white">
-                                        <img src="./index_files/1769997423000-z11hqkwo809.webp" alt="PJ Office &amp; House &quot;Inward Calm House&quot;" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy">
-                                        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300"></div>
-                                        <div class="absolute top-4 right-4 w-10 h-10 bg-white/90 backdrop-blur-md rounded-xl flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-2 group-hover:translate-y-0 shadow-neumorph-outset z-10 text-[#2C2C2C]">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-up-right w-5 h-5">
-                                                <path d="M7 7h10v10"></path>
-                                                <path d="M7 17 17 7"></path>
-                                            </svg>
-                                        </div>
-                                        <div class="absolute bottom-4 left-4 z-10">
-                                            <span class="px-4 py-2 bg-white/95 backdrop-blur-md text-[#A8E6CF] text-[10px] font-black uppercase tracking-widest rounded-lg shadow-neumorph-outset border border-white/20">Arsitek</span>
-                                        </div>
-                                    </div>
-                                    <div class="p-6 pt-2 flex flex-col flex-grow">
-                                        <h3 class="text-xl font-bold text-[#2C2C2C] mb-3 group-hover:text-primary transition-colors line-clamp-1">PJ Office &amp;House "Inward Calm House"</h3>
-                                        <p class="text-sm text-[#2C2C2C]/60 line-clamp-2 leading-relaxed mb-6 flex-grow font-medium">Inward Calm House
-Reframing Domestic Space as a Sanctuary
-
-Bangunan ini dirancang sebagai rumah yang memilih diam terhadap jalan, namun terbuka dan hidup ke dalam. Di tengah lingkungan perumahan yang padat dan seragam, rumah ini tidak berlomba menampilkan diri, melainkan membangun jarak—sebuah sikap arsitektural yang sadar akan privasi, ketenangan, dan kualitas ruang.
-
-Massa &amp;Sikap Terhadap Lingkungan
-
-Massa bangunan disusun sederhana dan horizontal, dibingkai oleh dinding perimeter masif dari bata dan beton ekspos. Elemen ini berfungsi sebagai lapisan proteksi visual dan akustik, sekaligus membentuk kesan solid dan membumi. Dari luar, bangunan tampak tertutup dan tenang—sebuah “filter” antara kehidupan domestik dan ruang publik.
-
-Namun ketertutupan ini bukan penolakan, melainkan transisi.
-
-Ruang Dalam &amp;Narasi Perjalanan
-
-Memasuki area dalam, pengalaman ruang berubah drastis. Rumah dibuka melalui courtyard dan void, memungkinkan cahaya alami, udara, dan vegetasi menjadi elemen utama pembentuk ruang. Sirkulasi dirancang linear dan mengalir, membawa penghuni dari ruang semi-publik menuju area yang semakin privat secara bertahap—tanpa sekat berlebihan.
-
-Void dan bukaan atas menghadirkan cahaya sebagai arsitektur, menciptakan permainan bayangan yang terus berubah sepanjang hari dan mempertegas ritme waktu di dalam rumah.
-
-Material &amp;Atmosfer
-
-Material dipilih dengan bahasa kejujuran dan ketenangan:
-
-Beton ekspos sebagai elemen struktural dan ekspresif
-
-Bata ekspos untuk memberi tekstur dan kehangatan visual
-
-Lantai terrazzo gelap yang reflektif, memperkuat kesan sejuk dan hening
-
-Bukaan kaca besar yang membingkai courtyard sebagai pusat orientasi ruang
-
-Kombinasi ini menghasilkan atmosfer interior yang kontemplatif, minim distraksi, dan fokus pada kualitas ruang, cahaya, dan proporsi.
-
-Arsitektur sebagai Ruang Hidup
-
-Rumah ini tidak dirancang untuk sekadar dilihat, melainkan dihuni secara perlahan. Setiap ruang memberi jeda, setiap transisi memberi napas. Arsitektur hadir bukan sebagai objek ikonik, tetapi sebagai latar yang mendukung kehidupan sehari-hari—tenang, jujur, dan berumur panjang.</p>
-                                        <div class="mt-auto pt-4 border-t border-[#D1D1D1]/40 flex justify-between items-center text-xs text-[#2C2C2C]/40 font-bold uppercase tracking-wider">
-                                            <span class="truncate max-w-[60%] flex items-center gap-1">Bambu Apus, Jakarta Timur</span>
-                                            <span>2026</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div style="opacity: 1; transform: none;">
-                                <div class="relative rounded-2xl shadow-neumorph-outset border-none bg-white text-[#2C2C2C] p-0 hover:shadow-neumorph-hover transition-all duration-300 ease-in-out h-full flex flex-col group overflow-hidden cursor-pointer">
-                                    <div class="relative aspect-[4/3] overflow-hidden m-3 rounded-[1.25rem] shadow-neumorph-inset bg-white">
-                                        <img src="./index_files/1769374884011-kl8vxqf5d1.webp" alt="MYS House" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy">
-                                        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300"></div>
-                                        <div class="absolute top-4 right-4 w-10 h-10 bg-white/90 backdrop-blur-md rounded-xl flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-2 group-hover:translate-y-0 shadow-neumorph-outset z-10 text-[#2C2C2C]">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-up-right w-5 h-5">
-                                                <path d="M7 7h10v10"></path>
-                                                <path d="M7 17 17 7"></path>
-                                            </svg>
-                                        </div>
-                                        <div class="absolute bottom-4 left-4 z-10">
-                                            <span class="px-4 py-2 bg-white/95 backdrop-blur-md text-[#A8E6CF] text-[10px] font-black uppercase tracking-widest rounded-lg shadow-neumorph-outset border border-white/20">Arsitek</span>
-                                        </div>
-                                    </div>
-                                    <div class="p-6 pt-2 flex flex-col flex-grow">
-                                        <h3 class="text-xl font-bold text-[#2C2C2C] mb-3 group-hover:text-primary transition-colors line-clamp-1">MYS House</h3>
-                                        <p class="text-sm text-[#2C2C2C]/60 line-clamp-2 leading-relaxed mb-6 flex-grow font-medium">Konsep Arsitektur: Quiet Courtyard
-
-Bangunan ini dirancang sebagai rumah yang bersikap menarik diri dari keramaian luar, namun terbuka dan hangat di dalam. Dinding perimeter yang masif membentuk batas tegas terhadap lingkungan sekitar, menciptakan lapisan proteksi visual, akustik, dan psikologis—sebuah gesture arsitektur yang memilih diam sebelum berbicara.
-
-Di balik ketertutupan itu, ruang dibuka melalui courtyard dan celah-celah cahaya. Roster, bukaan vertikal, dan void menjadi medium transisi antara privat dan publik, antara luar yang riuh dan dalam yang teduh. Cahaya tidak masuk secara frontal, melainkan disaring, dipantulkan, dan dilembutkan—menghadirkan suasana kontemplatif di dalam hunian.
-
-Atap pelana yang sederhana diolah ulang dalam bahasa kontemporer, menjaga kedekatan dengan tipologi rumah tropis sekaligus memberi identitas baru. Vegetasi ditempatkan sebagai elemen arsitektural, bukan sekadar lanskap: pohon dan tanaman menjadi peneduh, penyaring pandangan, serta penyeimbang massa beton yang solid.
-
-Material dipilih dengan kejujuran: beton ekspos, plesteran polos, dan tekstur kasar yang membiarkan waktu bekerja di permukaannya. Tidak ada ornamen berlebihan—arsitektur berbicara melalui proporsi, jeda, dan cahaya.
-
-Bangunan ini bukan tentang tampil, melainkan tentang menyediakan ruang untuk tenang—sebuah rumah yang melindungi, menyaring, dan merangkul kehidupan di dalamnya.</p>
-                                        <div class="mt-auto pt-4 border-t border-[#D1D1D1]/40 flex justify-between items-center text-xs text-[#2C2C2C]/40 font-bold uppercase tracking-wider">
-                                            <span class="truncate max-w-[60%] flex items-center gap-1">Babelan, Bekasi</span>
-                                            <span>2025</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div style="opacity: 1; transform: none;">
-                                <div class="relative rounded-2xl shadow-neumorph-outset border-none bg-white text-[#2C2C2C] p-0 hover:shadow-neumorph-hover transition-all duration-300 ease-in-out h-full flex flex-col group overflow-hidden cursor-pointer">
-                                    <div class="relative aspect-[4/3] overflow-hidden m-3 rounded-[1.25rem] shadow-neumorph-inset bg-white">
-                                        <img src="./index_files/1769371429760-fc7wknre7y7.webp" alt="FO Office Design" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy">
-                                        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300"></div>
-                                        <div class="absolute top-4 right-4 w-10 h-10 bg-white/90 backdrop-blur-md rounded-xl flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-2 group-hover:translate-y-0 shadow-neumorph-outset z-10 text-[#2C2C2C]">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-up-right w-5 h-5">
-                                                <path d="M7 7h10v10"></path>
-                                                <path d="M7 17 17 7"></path>
-                                            </svg>
-                                        </div>
-                                        <div class="absolute bottom-4 left-4 z-10">
-                                            <span class="px-4 py-2 bg-white/95 backdrop-blur-md text-[#A8E6CF] text-[10px] font-black uppercase tracking-widest rounded-lg shadow-neumorph-outset border border-white/20">Arsitek</span>
-                                        </div>
-                                    </div>
-                                    <div class="p-6 pt-2 flex flex-col flex-grow">
-                                        <h3 class="text-xl font-bold text-[#2C2C2C] mb-3 group-hover:text-primary transition-colors line-clamp-1">FO Office Design</h3>
-                                        <p class="text-sm text-[#2C2C2C]/60 line-clamp-2 leading-relaxed mb-6 flex-grow font-medium">Konsep Arsitektur: Layered Horizon
-
-Bangunan ini dirancang sebagai ekspresi arsitektur kontemporer yang merespons lanskap terbuka melalui bahasa horizontal yang kuat. Massa disusun berlapis dan memanjang, membentuk siluet yang rendah namun luas—seolah bangunan tumbuh mengikuti garis cakrawala, bukan mendominasinya.
-
-Setiap lantai diperlakukan sebagai lapisan ruang yang saling bergeser, menciptakan permainan bayangan, teritis, dan balkon yang berfungsi sebagai transisi antara dalam dan luar. Strategi ini tidak hanya membangun ritme visual, tetapi juga menjadi respon iklim: melindungi fasad kaca dari hujan dan panas berlebih.
-
-Transparansi menjadi elemen kunci. Fasad kaca lebar membuka aktivitas interior ke lingkungan sekitar, memperlihatkan kehidupan di dalam bangunan sebagai bagian dari lanskap. Cahaya hangat dari dalam memantul keluar, menjadikan bangunan tetap hidup bahkan di tengah cuaca hujan—sebuah “lentera horizontal” di ruang terbuka.
-
-Material dipilih secara jujur dan terkendali: warna terang pada bidang solid menegaskan kesan ringan, sementara garis tegas struktur menjadi kerangka yang menahan komposisi. Tidak ada elemen berlebihan—arsitektur bekerja melalui proporsi, layering, dan relasi ruang.
-
-Bangunan ini bukan sekadar wadah fungsi, tetapi sebuah arsitektur yang berjalan sejajar dengan manusia dan alam—tenang, terbuka, dan berkarakter.</p>
-                                        <div class="mt-auto pt-4 border-t border-[#D1D1D1]/40 flex justify-between items-center text-xs text-[#2C2C2C]/40 font-bold uppercase tracking-wider">
-                                            <span class="truncate max-w-[60%] flex items-center gap-1">....</span>
-                                            <span>2025</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div style="opacity: 1; transform: none;">
-                                <div class="relative rounded-2xl shadow-neumorph-outset border-none bg-white text-[#2C2C2C] p-0 hover:shadow-neumorph-hover transition-all duration-300 ease-in-out h-full flex flex-col group overflow-hidden cursor-pointer">
-                                    <div class="relative aspect-[4/3] overflow-hidden m-3 rounded-[1.25rem] shadow-neumorph-inset bg-white">
-                                        <img src="./index_files/1769166015431-2vhcaqs46yn.webp" alt="Pondok Jurumiyah, Tangerang" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy">
-                                        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300"></div>
-                                        <div class="absolute top-4 right-4 w-10 h-10 bg-white/90 backdrop-blur-md rounded-xl flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-2 group-hover:translate-y-0 shadow-neumorph-outset z-10 text-[#2C2C2C]">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-up-right w-5 h-5">
-                                                <path d="M7 7h10v10"></path>
-                                                <path d="M7 17 17 7"></path>
-                                            </svg>
-                                        </div>
-                                        <div class="absolute bottom-4 left-4 z-10">
-                                            <span class="px-4 py-2 bg-white/95 backdrop-blur-md text-[#A8E6CF] text-[10px] font-black uppercase tracking-widest rounded-lg shadow-neumorph-outset border border-white/20">Arsitek</span>
-                                        </div>
-                                    </div>
-                                    <div class="p-6 pt-2 flex flex-col flex-grow">
-                                        <h3 class="text-xl font-bold text-[#2C2C2C] mb-3 group-hover:text-primary transition-colors line-clamp-1">Pondok Jurumiyah, Tangerang</h3>
-                                        <p class="text-sm text-[#2C2C2C]/60 line-clamp-2 leading-relaxed mb-6 flex-grow font-medium">Design By : Surya Arliansyah
-
-Jurumiyah Tower
-
-Bangunan ini dapat dibaca sebagai arsitektur kontemporer urban yang bersikap kontekstual namun tegas secara karakter—sebuah “objek tenang” yang berdiri di tengah kepadatan kampung kota.
-
-Konsep utamanya adalah vertical living as a sanctuary.
-Di lahan terbatas, massa bangunan ditarik ke atas, membentuk komposisi vertikal yang ramping. Setiap lantai disusun seperti lapisan ruang yang bergradasi: dari publik di bawah, menuju ruang yang semakin privat dan kontemplatif di atas. Ini bukan sekadar bangunan tinggi, tapi rumah yang disusun perlahan ke langit.
-
-Secara material, beton ekspos dipilih sebagai bahasa kejujuran struktur—kokoh, apa adanya, dan tahan waktu. Kekerasan beton kemudian “dijinakkan” oleh secondary skin berlubang dan vegetasi yang tumbuh di sela-sela massa. Elemen ini berfungsi ganda: penyaring cahaya, ventilasi alami, sekaligus medium bayangan yang membuat fasad selalu hidup sepanjang hari.
-
-Permainan cahaya hangat dari bukaan-bukaan kecil menjadi aksen artistik. Di malam hari, bangunan tidak tampil dominan, melainkan memancarkan kesan intim—seperti lentera vertikal di tengah lingkungan padat. Ini adalah pendekatan arsitektur yang menghormati skala sekitar tanpa kehilangan identitas.
-
-Ruang hijau yang disisipkan di beberapa level bukan dekorasi, tetapi bagian dari strategi iklim: membantu pendinginan pasif, menghadirkan jeda visual, dan memberi pengalaman ruang yang lebih manusiawi. Bangunan ini tidak memisahkan diri dari kota, tapi bernapas bersama lingkungannya.
-
-Sebagai karya studio, proyek ini memposisikan arsitektur bukan hanya sebagai wadah fungsi, melainkan komposisi ruang, cahaya, dan emosi—sebuah karya yang berdiri di antara rasionalitas teknik dan kepekaan artistik.</p>
-                                        <div class="mt-auto pt-4 border-t border-[#D1D1D1]/40 flex justify-between items-center text-xs text-[#2C2C2C]/40 font-bold uppercase tracking-wider">
-                                            <span class="truncate max-w-[60%] flex items-center gap-1">3 Raksa, Tangerang</span>
-                                            <span>2024</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div style="opacity: 1; transform: none;">
-                                <div class="relative rounded-2xl shadow-neumorph-outset border-none bg-white text-[#2C2C2C] p-0 hover:shadow-neumorph-hover transition-all duration-300 ease-in-out h-full flex flex-col group overflow-hidden cursor-pointer">
-                                    <div class="relative aspect-[4/3] overflow-hidden m-3 rounded-[1.25rem] shadow-neumorph-inset bg-white">
-                                        <img src="./index_files/1768997626247-7y8xahv03kh.webp" alt="KoKoish T House Proposal " class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy">
-                                        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300"></div>
-                                        <div class="absolute top-4 right-4 w-10 h-10 bg-white/90 backdrop-blur-md rounded-xl flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-2 group-hover:translate-y-0 shadow-neumorph-outset z-10 text-[#2C2C2C]">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-up-right w-5 h-5">
-                                                <path d="M7 7h10v10"></path>
-                                                <path d="M7 17 17 7"></path>
-                                            </svg>
-                                        </div>
-                                        <div class="absolute bottom-4 left-4 z-10">
-                                            <span class="px-4 py-2 bg-white/95 backdrop-blur-md text-[#A8E6CF] text-[10px] font-black uppercase tracking-widest rounded-lg shadow-neumorph-outset border border-white/20">Arsitek</span>
-                                        </div>
-                                    </div>
-                                    <div class="p-6 pt-2 flex flex-col flex-grow">
-                                        <h3 class="text-xl font-bold text-[#2C2C2C] mb-3 group-hover:text-primary transition-colors line-clamp-1">KoKoish T House Proposal </h3>
-                                        <p class="text-sm text-[#2C2C2C]/60 line-clamp-2 leading-relaxed mb-6 flex-grow font-medium">Konsep Arsitektur: Architecture as an Inhabitable Sculpture
-
-Bangunan ini dirancang sebagai sebuah karya seni yang dapat dihuni—sebuah inhabitable sculpture yang menempatkan arsitektur bukan sekadar sebagai wadah fungsi, tetapi sebagai medium ekspresi, emosi, dan pengalaman ruang.
-
-Komposisi massa bangunan disusun layaknya sebuah instalasi seni tiga dimensi. Massa bawah beton ekspos berperan sebagai plinth—sebuah podium kokoh yang lazim ditemukan dalam dunia seni rupa—menjadi dasar yang tenang, berat, dan membumi. Elemen ini merepresentasikan stabilitas, keheningan, dan keterikatan dengan tanah serta lanskap.
-
-Di atasnya, massa atas yang melayang tampil sebagai objek artistik utama, seolah terlepas dari gravitasi. Cantilever yang tegas menciptakan ketegangan visual antara berat dan ringan, antara solid dan transparan. Seperti karya seni kontemporer, bangunan ini tidak hanya ingin dilihat, tetapi juga mengundang pertanyaan: tentang keseimbangan, batas struktur, dan persepsi ruang.
-
-Fasad bangunan diperlakukan sebagai lapisan artistik, menyerupai tirai atau serat vertikal yang menyelimuti volume utama. Elemen ini bekerja layaknya medium seni—menyaring cahaya, menciptakan ritme visual, serta menghasilkan bayangan yang terus berubah mengikuti waktu dan cuaca. Dengan demikian, bangunan tidak pernah tampil statis, melainkan selalu “berproses” seperti karya seni kinetik yang hidup bersama alam.
-
-Cahaya menjadi material utama dalam desain ini. Pada siang hari, cahaya alami masuk secara difus, menciptakan atmosfer ruang yang lembut dan kontemplatif. Pada malam hari, bangunan berubah menjadi objek cahaya, memancarkan kehangatan dari dalam ke luar, menjadikannya sebuah landmark emosional di tengah lanskap. Efek ini menyerupai karya light art yang memanfaatkan kontras terang–gelap untuk membangun narasi visual.
-
-Relasi bangunan dengan lingkungan tidak bersifat dominatif, melainkan dialogis. Lanskap tropis, hujan, kabut, dan refleksi air pada permukaan jalan menjadi bagian dari komposisi visual arsitektur secara keseluruhan. Bangunan ini tidak berdiri sebagai objek terisolasi, tetapi sebagai bagian dari “kanvas alam” yang selalu berubah.
-
-Melalui pendekatan ini, arsitektur tidak lagi dibaca semata sebagai produk teknis, melainkan sebagai ekspresi artistik yang rasional, di mana struktur, material, cahaya, dan ruang bersatu membentuk pengalaman yang bersifat personal, emosional, dan bermakna.</p>
-                                        <div class="mt-auto pt-4 border-t border-[#D1D1D1]/40 flex justify-between items-center text-xs text-[#2C2C2C]/40 font-bold uppercase tracking-wider">
-                                            <span class="truncate max-w-[60%] flex items-center gap-1">Ubud Bali</span>
-                                            <span>2025</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div style="opacity: 1; transform: none;">
-                                <div class="relative rounded-2xl shadow-neumorph-outset border-none bg-white text-[#2C2C2C] p-0 hover:shadow-neumorph-hover transition-all duration-300 ease-in-out h-full flex flex-col group overflow-hidden cursor-pointer">
-                                    <div class="relative aspect-[4/3] overflow-hidden m-3 rounded-[1.25rem] shadow-neumorph-inset bg-white">
-                                        <img src="./index_files/1768810110587-agz120fohud.webp" alt="Pak Agung Bambu Apus, Jakarta Timur" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy">
-                                        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300"></div>
-                                        <div class="absolute top-4 right-4 w-10 h-10 bg-white/90 backdrop-blur-md rounded-xl flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-2 group-hover:translate-y-0 shadow-neumorph-outset z-10 text-[#2C2C2C]">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-up-right w-5 h-5">
-                                                <path d="M7 7h10v10"></path>
-                                                <path d="M7 17 17 7"></path>
-                                            </svg>
-                                        </div>
-                                        <div class="absolute bottom-4 left-4 z-10">
-                                            <span class="px-4 py-2 bg-white/95 backdrop-blur-md text-[#A8E6CF] text-[10px] font-black uppercase tracking-widest rounded-lg shadow-neumorph-outset border border-white/20">Arsitek</span>
-                                        </div>
-                                    </div>
-                                    <div class="p-6 pt-2 flex flex-col flex-grow">
-                                        <h3 class="text-xl font-bold text-[#2C2C2C] mb-3 group-hover:text-primary transition-colors line-clamp-1">Pak Agung Bambu Apus, Jakarta Timur</h3>
-                                        <p class="text-sm text-[#2C2C2C]/60 line-clamp-2 leading-relaxed mb-6 flex-grow font-medium">Design By : Surya Arliansyah
-
-Rumah Tinggal Minimalis Tropis – Hunian Urban Berlapis Privasi
-
-Proyek ini dirancang sebagai hunian urban dengan pendekatan arsitektur minimalis tropis, yang menitikberatkan pada kesederhanaan bentuk, kenyamanan iklim, dan privasi penghuni di tengah lingkungan kota yang padat.
-
-Massa bangunan dibentuk dari komposisi geometris sederhana dengan permainan volume horizontal. Lantai dua dibuat menjorok ke depan sebagai overhang, menciptakan kesan ringan sekaligus berfungsi melindungi area carport dari panas dan hujan. Konsep ini memperkuat karakter modern sekaligus efisien secara pasif terhadap iklim tropis.
-
-Fasade dirancang relatif tertutup ke arah jalan untuk menjaga privasi, terutama pada lantai satu. Pada lantai atas, diterapkan secondary skin berupa kisi-kisi kayu yang berfungsi sebagai filter cahaya, peredam panas, serta elemen estetika yang memberi kesan hangat dan natural. Elemen ini juga memungkinkan sirkulasi udara tetap optimal tanpa mengorbankan kenyamanan visual penghuni.
-
-Sebagai respon terhadap iklim tropis, bangunan ini mengintegrasikan vegetasi aktif pada balkon lantai dua berupa tanaman rambat yang membentuk green façade. Selain meningkatkan kualitas visual, vegetasi ini membantu menurunkan suhu permukaan bangunan dan menciptakan suasana hunian yang lebih sejuk dan asri.
-
-Pemilihan material didominasi oleh warna netral seperti putih dan abu-abu beton, dipadukan dengan aksen kayu dan besi hitam pada pagar. Kombinasi ini menghasilkan tampilan yang modern, elegan, serta mudah dalam perawatan jangka panjang.
-
-Secara keseluruhan, proyek ini menghadirkan hunian modern yang tidak hanya kuat secara visual, tetapi juga responsif terhadap iklim, fungsional untuk kehidupan urban, dan selaras dengan kebutuhan privasi serta kenyamanan penghuninya.
-Bangunan ini merepresentasikan keseimbangan antara estetika minimalis, performa iklim, dan kualitas ruang hidup.
-</p>
-                                        <div class="mt-auto pt-4 border-t border-[#D1D1D1]/40 flex justify-between items-center text-xs text-[#2C2C2C]/40 font-bold uppercase tracking-wider">
-                                            <span class="truncate max-w-[60%] flex items-center gap-1">Bambu Apus, Jakarta Timur</span>
-                                            <span>2024</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div style="opacity: 1; transform: none;">
-                                <div class="relative rounded-2xl shadow-neumorph-outset border-none bg-white text-[#2C2C2C] p-0 hover:shadow-neumorph-hover transition-all duration-300 ease-in-out h-full flex flex-col group overflow-hidden cursor-pointer">
-                                    <div class="relative aspect-[4/3] overflow-hidden m-3 rounded-[1.25rem] shadow-neumorph-inset bg-white">
-                                        <img src="./index_files/1768625787745-d0tmeyta9ip.webp" alt="ETSI Office" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy">
-                                        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300"></div>
-                                        <div class="absolute top-4 right-4 w-10 h-10 bg-white/90 backdrop-blur-md rounded-xl flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-2 group-hover:translate-y-0 shadow-neumorph-outset z-10 text-[#2C2C2C]">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-up-right w-5 h-5">
-                                                <path d="M7 7h10v10"></path>
-                                                <path d="M7 17 17 7"></path>
-                                            </svg>
-                                        </div>
-                                        <div class="absolute bottom-4 left-4 z-10">
-                                            <span class="px-4 py-2 bg-white/95 backdrop-blur-md text-[#52C77A] text-[10px] font-black uppercase tracking-widest rounded-lg shadow-neumorph-outset border border-white/20">Konstruksi</span>
-                                        </div>
-                                    </div>
-                                    <div class="p-6 pt-2 flex flex-col flex-grow">
-                                        <h3 class="text-xl font-bold text-[#2C2C2C] mb-3 group-hover:text-primary transition-colors line-clamp-1">ETSI Office</h3>
-                                        <p class="text-sm text-[#2C2C2C]/60 line-clamp-2 leading-relaxed mb-6 flex-grow font-medium">Design by : Arram Rupa
-Konstruksi By : Havior Architecture
-Project ini project konstruksi interor Office, untuk support pekerjaan dari studio Arram Rupa, dan client utama PT ETSI.</p>
-                                        <div class="mt-auto pt-4 border-t border-[#D1D1D1]/40 flex justify-between items-center text-xs text-[#2C2C2C]/40 font-bold uppercase tracking-wider">
-                                            <span class="truncate max-w-[60%] flex items-center gap-1">Kali Bata, Jakarta Timur</span>
-                                            <span>2024</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div style="opacity: 1; transform: none;">
-                                <div class="relative rounded-2xl shadow-neumorph-outset border-none bg-white text-[#2C2C2C] p-0 hover:shadow-neumorph-hover transition-all duration-300 ease-in-out h-full flex flex-col group overflow-hidden cursor-pointer">
-                                    <div class="relative aspect-[4/3] overflow-hidden m-3 rounded-[1.25rem] shadow-neumorph-inset bg-white">
-                                        <img src="./index_files/1768590433048-6tyuisxbrp6.png" alt="AY House, Bambu Apus" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy">
-                                        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300"></div>
-                                        <div class="absolute top-4 right-4 w-10 h-10 bg-white/90 backdrop-blur-md rounded-xl flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-2 group-hover:translate-y-0 shadow-neumorph-outset z-10 text-[#2C2C2C]">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-up-right w-5 h-5">
-                                                <path d="M7 7h10v10"></path>
-                                                <path d="M7 17 17 7"></path>
-                                            </svg>
-                                        </div>
-                                        <div class="absolute bottom-4 left-4 z-10">
-                                            <span class="px-4 py-2 bg-white/95 backdrop-blur-md text-[#A8E6CF] text-[10px] font-black uppercase tracking-widest rounded-lg shadow-neumorph-outset border border-white/20">Arsitek</span>
-                                        </div>
-                                    </div>
-                                    <div class="p-6 pt-2 flex flex-col flex-grow">
-                                        <h3 class="text-xl font-bold text-[#2C2C2C] mb-3 group-hover:text-primary transition-colors line-clamp-1">AY House, Bambu Apus</h3>
-                                        <p class="text-sm text-[#2C2C2C]/60 line-clamp-2 leading-relaxed mb-6 flex-grow font-medium">Minimalist Tropical House
-
-Proyek ini dirancang dengan pendekatan minimalis tropikal, merespon iklim dan konteks lingkungan melalui optimalisasi pencahayaan alami dan sistem pengudaraan silang. Strategi bukaan, orientasi bangunan, serta pengolahan massa dirancang agar cahaya matahari dan aliran udara dapat masuk secara maksimal ke dalam ruang, menciptakan kualitas ruang yang terang, sejuk, dan efisien secara energi.
-
-Massa bangunan diolah dengan konsep floating volume untuk menghadirkan kesan ringan dan kontemporer, sekaligus membentuk ruang transisi di bawah bangunan yang berfungsi sebagai area teduh dan adaptif terhadap iklim tropis. Bahasa desain minimalis diterapkan melalui komposisi geometris yang sederhana, garis-garis tegas, serta pemilihan material yang jujur dan fungsional.
-
-Perpaduan prinsip minimalisme dan arsitektur tropikal menghasilkan hunian yang tidak hanya menekankan estetika, tetapi juga kenyamanan termal, efisiensi, dan keberlanjutan. Proyek ini merepresentasikan upaya menghadirkan arsitektur yang kontekstual, relevan, dan selaras dengan kebutuhan penghuninya serta lingkungan sekitarnya.</p>
-                                        <div class="mt-auto pt-4 border-t border-[#D1D1D1]/40 flex justify-between items-center text-xs text-[#2C2C2C]/40 font-bold uppercase tracking-wider">
-                                            <span class="truncate max-w-[60%] flex items-center gap-1">Indonesia</span>
-                                            <span>2026</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                        <div
+                            id="project-grid"
+                            class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
                         </div>
                     </div>
                 </main>

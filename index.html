@@ -29,6 +29,48 @@
             ;
         </script>
         <script>
+            fetch('./Haviarchitecture/project.json')
+            .then(res => res.json())
+            .then(projects => {
+                const container = document.getElementById('projectContainer');
+
+                projects.slice(0, 6).forEach(project => {
+                const card = document.createElement('div');
+                card.className =
+                    "relative rounded-2xl shadow-neumorph-outset bg-[#F0F0F0] p-3 group h-[450px] flex flex-col project-card";
+
+                card.innerHTML = `
+                    <div class="relative w-full h-full rounded-[1.5rem] overflow-hidden shadow-neumorph-inset">
+                    <img src="./Haviarchitecture/${project.image}" alt="${project.title}"
+                        class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+
+                    <div class="absolute bottom-0 left-0 right-0 p-8">
+                        <span class="px-3 py-1 bg-green text-white text-[10px] font-bold rounded-full">
+                        ${project.category}
+                        </span>
+
+                        <h3 class="text-2xl font-bold mt-3 text-white">
+                        ${project.title}
+                        </h3>
+
+                        <p class="text-white/80 text-sm line-clamp-2 mt-2">
+                        ${project.description || ""}
+                        </p>
+
+                        <a href="./Details/?project=${project.id}" class="text-primary text-xs font-bold uppercase mt-4 inline-flex items-center gap-1">
+                        View Case Study →
+                        </a>
+                    </div>
+                    </div>
+                `;
+
+                container.appendChild(card);
+                });
+            });
+        </script>
+        <script>
             function attachWhatsAppListeners() {
                 function sendWhatsAppMessage(customMessage = null) {
                     let msg = customMessage || document.getElementById('message')?.value.trim() || 'Halo, saya ingin berkonsultasi mengenai proyek arsitektur saya.';
@@ -858,189 +900,8 @@
                                     </button>
                                 </a>
                             </div>
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                                <div class="relative rounded-2xl shadow-neumorph-outset border-none bg-[#F0F0F0] text-[#2C2C2C] p-3 hover:shadow-neumorph-hover cursor-pointer overflow-hidden transition-all duration-300 ease-in-out group h-[450px] flex flex-col">
-                                    <div class="relative w-full h-full rounded-[1.5rem] overflow-hidden shadow-neumorph-inset">
-                                        <img src="./Haviarchitecture/1770540468275-0zb001dkoys.png" alt="LPTQ, Kalimantan" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
-                                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-300"></div>
-                                        <div class="absolute bottom-0 left-0 right-0 p-8 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
-                                            <div class="flex items-center gap-2 mb-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100">
-                                                <span class="px-3 py-1 bg-green text-white text-[10px] font-bold uppercase tracking-widest rounded-full">Arsitek</span>
-                                            </div>
-                                            <h3 class="text-2xl font-bold mb-3 text-white">LPTQ, Kalimantan</h3>
-                                            <p class="text-white/80 line-clamp-2 text-sm max-w-xs opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-200 mb-4"></p>
-                                            <div class="flex items-center gap-2 text-primary text-xs font-bold uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-300">
-                                                <a href="./Details/" class="flex items-center gap-1">
-                                                    View Case Study 
-                                                </a>
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right w-4 h-4">
-                                                    <path d="M5 12h14"></path>
-                                                    <path d="m12 5 7 7-7 7"></path>
-                                                </svg>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="relative rounded-2xl shadow-neumorph-outset border-none bg-[#F0F0F0] text-[#2C2C2C] p-3 hover:shadow-neumorph-hover cursor-pointer overflow-hidden transition-all duration-300 ease-in-out group h-[450px] flex flex-col">
-                                    <div class="relative w-full h-full rounded-[1.5rem] overflow-hidden shadow-neumorph-inset">
-                                        <img src="./Haviarchitecture/1770518627720-qwv8pweatzb.png" alt="MMHouse, Concrete Canopy House" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
-                                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-300"></div>
-                                        <div class="absolute bottom-0 left-0 right-0 p-8 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
-                                            <div class="flex items-center gap-2 mb-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100">
-                                                <span class="px-3 py-1 bg-green text-white text-[10px] font-bold uppercase tracking-widest rounded-full">Arsitek</span>
-                                            </div>
-                                            <h3 class="text-2xl font-bold mb-3 text-white">MMHouse, Concrete Canopy House</h3>
-                                            <p class="text-white/80 line-clamp-2 text-sm max-w-xs opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-200 mb-4">Concrete Canopy House
-
-Concrete Canopy House dirancang sebagai hunian tropis kontemporer yang mengedepankan ketenangan, perlindungan, dan kejujuran material. Bangunan ini merespons iklim dan konteks tapak melalui komposisi massa yang tegas namun bersahaja, menghadirkan rumah yang tidak menonjol secara berlebihan, tetapi kuat dalam karakter dan pengalaman ruang.
-
-Massa bangunan disusun berlapis dengan pendekatan hierarki yang jelas antara ruang publik dan privat. Lantai dasar dirancang lebih terbuka dan terhubung langsung dengan ruang luar—halaman, kolam, dan area transisi—sementara lantai atas dibentuk sebagai volume beton masif yang lebih tertutup dan privat. Volume atas ini sekaligus berperan sebagai elemen pelindung, menciptakan bayangan dan menaungi aktivitas di bawahnya.
-
-Elemen kanopi beton menjadi gestur arsitektural utama. Selain berfungsi sebagai carport dan ruang transisi, kanopi ini memperkuat narasi rumah sebagai tempat berlindung dari panas dan hujan, sekaligus menegaskan karakter struktural bangunan. Hubungan antara massa, kanopi, dan ruang luar dirancang untuk menciptakan kenyamanan termal serta pengalaman ruang yang bertahap.
-
-Pendekatan material menekankan kejujuran dan ketahanan jangka panjang. Beton ekspos dipilih sebagai ekspresi struktur yang apa adanya—kokoh, tenang, dan minim ornamen—kemudian diseimbangkan dengan bidang plester putih untuk menghadirkan kontras visual yang bersih. Elemen kayu digunakan secara selektif pada area tertentu untuk memberi kehangatan, sementara roster beton berfungsi sebagai penyaring cahaya, udara, dan privasi.
-
-Bukaan dirancang vertikal dan terkontrol, memungkinkan cahaya alami masuk secara lembut tanpa mengorbankan privasi. Pada malam hari, pencahayaan hangat dari dalam bangunan membentuk suasana yang kontras dengan massa beton yang solid, menghadirkan kesan hunian yang hangat dan hidup di balik fasad yang tenang.
-
-Concrete Canopy House bukan sekadar objek arsitektur, melainkan ruang hidup yang dirancang untuk dihuni dalam jangka panjang—sebuah rumah yang menawarkan keteduhan, ketenangan, dan keseimbangan antara struktur, cahaya, dan lanskap.</p>
-                                            <div class="flex items-center gap-2 text-primary text-xs font-bold uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-300">
-                                                <a href="./Details/" class="flex items-center gap-1">
-                                                    View Case Study 
-                                                </a>
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right w-4 h-4">
-                                                    <path d="M5 12h14"></path>
-                                                    <path d="m12 5 7 7-7 7"></path>
-                                                </svg>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="relative rounded-2xl shadow-neumorph-outset border-none bg-[#F0F0F0] text-[#2C2C2C] p-3 hover:shadow-neumorph-hover cursor-pointer overflow-hidden transition-all duration-300 ease-in-out group h-[450px] flex flex-col" style="transform: none;">
-                                    <div class="relative w-full h-full rounded-[1.5rem] overflow-hidden shadow-neumorph-inset">
-                                        <img src="./Haviarchitecture/1770351693758-dv9uj1hprg.png" alt="Apartment Lobby, Emerald Heritage Lounge" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
-                                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-300"></div>
-                                        <div class="absolute bottom-0 left-0 right-0 p-8 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
-                                            <div class="flex items-center gap-2 mb-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100">
-                                                <span class="px-3 py-1 bg-green text-white text-[10px] font-bold uppercase tracking-widest rounded-full">Interior</span>
-                                            </div>
-                                            <h3 class="text-2xl font-bold mb-3 text-white">Apartment Lobby, Emerald Heritage Lounge</h3>
-                                            <p class="text-white/80 line-clamp-2 text-sm max-w-xs opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-200 mb-4">Emerald Heritage Lounge
-
-Ruang ini dirancang sebagai sebuah jeda—sebuah interior yang tidak sekadar berfungsi sebagai lounge, tetapi sebagai pengalaman emosional yang menenangkan. Emerald Heritage Lounge memaknai kemewahan bukan melalui kemegahan berlebihan, melainkan melalui ketenangan, kedalaman warna, dan kejujuran material.
-
-Bahasa ruang dibentuk oleh geometri melengkung yang mengalir, hadir pada dinding dan plafon sebagai upaya melembutkan batas serta menghilangkan kesan rigid. Kurva-kurva ini membimbing pergerakan secara intuitif, menciptakan sirkulasi yang natural dan ritme ruang yang tenang. Tidak ada sudut tajam yang mendominasi—ruang memilih untuk bersikap ramah dan merangkul.
-
-Palet hijau zamrud menjadi elemen utama yang membangun atmosfer kontemplatif. Warna ini merepresentasikan keseimbangan antara alam dan kemewahan klasik, diperkuat oleh material kulit coklat tua, kayu gelap, dan lantai batu alam yang menghadirkan kesan hangat, berat, dan membumi. Setiap material dipilih untuk menua dengan indah, membentuk karakter ruang yang bertahan melampaui tren.
-
-Plafon aksen dengan tekstur artistik berwarna keemasan berfungsi sebagai focal point visual—sebuah elemen dramatik yang tidak mendominasi, namun memberi identitas kuat pada ruang. Cahaya hangat tersembunyi mengikuti kontur plafon, menciptakan efek melayang dan mempertegas kedalaman ruang tanpa silau, menghadirkan ambience yang intim dan bersahaja.
-
-Tata furnitur disusun dalam kelompok-kelompok kecil, membentuk ruang duduk yang privat tanpa sekat masif. Tanaman indoor berdaun lebar digunakan sebagai elemen transisi, memperhalus skala ruang sekaligus memperkuat hubungan visual dengan alam. Ruang publik ini kemudian terasa personal—terbuka, namun tetap terlindungi.
-
-Emerald Heritage Lounge dirancang sebagai interior yang bersikap tenang di tengah dinamika. Sebuah ruang yang mengundang untuk berhenti sejenak, duduk, dan merasakan waktu berjalan lebih lambat—di mana kemewahan hadir bukan untuk dipamerkan, melainkan untuk dirasakan.</p>
-                                            <div class="flex items-center gap-2 text-primary text-xs font-bold uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-300">
-                                                <a href="./Details/" class="flex items-center gap-1">
-                                                    View Case Study 
-                                                </a>
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right w-4 h-4">
-                                                    <path d="M5 12h14"></path>
-                                                    <path d="m12 5 7 7-7 7"></path>
-                                                </svg>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                                <div class="relative rounded-2xl shadow-neumorph-outset border-none bg-[#F0F0F0] text-[#2C2C2C] p-3 hover:shadow-neumorph-hover cursor-pointer overflow-hidden transition-all duration-300 ease-in-out group h-[450px] flex flex-col">
-                                    <div class="relative w-full h-full rounded-[1.5rem] overflow-hidden shadow-neumorph-inset">
-                                        <img src="./Haviarchitecture/1770540468275-0zb001dkoys.png" alt="LPTQ, Kalimantan" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
-                                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-300"></div>
-                                        <div class="absolute bottom-0 left-0 right-0 p-8 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
-                                            <div class="flex items-center gap-2 mb-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100">
-                                                <span class="px-3 py-1 bg-green text-white text-[10px] font-bold uppercase tracking-widest rounded-full">Arsitek</span>
-                                            </div>
-                                            <h3 class="text-2xl font-bold mb-3 text-white">LPTQ, Kalimantan</h3>
-                                            <p class="text-white/80 line-clamp-2 text-sm max-w-xs opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-200 mb-4"></p>
-                                            <div class="flex items-center gap-2 text-primary text-xs font-bold uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-300">
-                                                <a href="./Details/" class="flex items-center gap-1">
-                                                    View Case Study 
-                                                </a>
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right w-4 h-4">
-                                                    <path d="M5 12h14"></path>
-                                                    <path d="m12 5 7 7-7 7"></path>
-                                                </svg>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="relative rounded-2xl shadow-neumorph-outset border-none bg-[#F0F0F0] text-[#2C2C2C] p-3 hover:shadow-neumorph-hover cursor-pointer overflow-hidden transition-all duration-300 ease-in-out group h-[450px] flex flex-col">
-                                    <div class="relative w-full h-full rounded-[1.5rem] overflow-hidden shadow-neumorph-inset">
-                                        <img src="./Haviarchitecture/1770518627720-qwv8pweatzb.png" alt="MMHouse, Concrete Canopy House" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
-                                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-300"></div>
-                                        <div class="absolute bottom-0 left-0 right-0 p-8 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
-                                            <div class="flex items-center gap-2 mb-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100">
-                                                <span class="px-3 py-1 bg-green text-white text-[10px] font-bold uppercase tracking-widest rounded-full">Arsitek</span>
-                                            </div>
-                                            <h3 class="text-2xl font-bold mb-3 text-white">MMHouse, Concrete Canopy House</h3>
-                                            <p class="text-white/80 line-clamp-2 text-sm max-w-xs opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-200 mb-4">Concrete Canopy House
-
-Concrete Canopy House dirancang sebagai hunian tropis kontemporer yang mengedepankan ketenangan, perlindungan, dan kejujuran material. Bangunan ini merespons iklim dan konteks tapak melalui komposisi massa yang tegas namun bersahaja, menghadirkan rumah yang tidak menonjol secara berlebihan, tetapi kuat dalam karakter dan pengalaman ruang.
-
-Massa bangunan disusun berlapis dengan pendekatan hierarki yang jelas antara ruang publik dan privat. Lantai dasar dirancang lebih terbuka dan terhubung langsung dengan ruang luar—halaman, kolam, dan area transisi—sementara lantai atas dibentuk sebagai volume beton masif yang lebih tertutup dan privat. Volume atas ini sekaligus berperan sebagai elemen pelindung, menciptakan bayangan dan menaungi aktivitas di bawahnya.
-
-Elemen kanopi beton menjadi gestur arsitektural utama. Selain berfungsi sebagai carport dan ruang transisi, kanopi ini memperkuat narasi rumah sebagai tempat berlindung dari panas dan hujan, sekaligus menegaskan karakter struktural bangunan. Hubungan antara massa, kanopi, dan ruang luar dirancang untuk menciptakan kenyamanan termal serta pengalaman ruang yang bertahap.
-
-Pendekatan material menekankan kejujuran dan ketahanan jangka panjang. Beton ekspos dipilih sebagai ekspresi struktur yang apa adanya—kokoh, tenang, dan minim ornamen—kemudian diseimbangkan dengan bidang plester putih untuk menghadirkan kontras visual yang bersih. Elemen kayu digunakan secara selektif pada area tertentu untuk memberi kehangatan, sementara roster beton berfungsi sebagai penyaring cahaya, udara, dan privasi.
-
-Bukaan dirancang vertikal dan terkontrol, memungkinkan cahaya alami masuk secara lembut tanpa mengorbankan privasi. Pada malam hari, pencahayaan hangat dari dalam bangunan membentuk suasana yang kontras dengan massa beton yang solid, menghadirkan kesan hunian yang hangat dan hidup di balik fasad yang tenang.
-
-Concrete Canopy House bukan sekadar objek arsitektur, melainkan ruang hidup yang dirancang untuk dihuni dalam jangka panjang—sebuah rumah yang menawarkan keteduhan, ketenangan, dan keseimbangan antara struktur, cahaya, dan lanskap.</p>
-                                            <div class="flex items-center gap-2 text-primary text-xs font-bold uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-300">
-                                                <a href="./Details/" class="flex items-center gap-1">
-                                                    View Case Study 
-                                                </a>
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right w-4 h-4">
-                                                    <path d="M5 12h14"></path>
-                                                    <path d="m12 5 7 7-7 7"></path>
-                                                </svg>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="relative rounded-2xl shadow-neumorph-outset border-none bg-[#F0F0F0] text-[#2C2C2C] p-3 hover:shadow-neumorph-hover cursor-pointer overflow-hidden transition-all duration-300 ease-in-out group h-[450px] flex flex-col" style="transform: none;">
-                                    <div class="relative w-full h-full rounded-[1.5rem] overflow-hidden shadow-neumorph-inset">
-                                        <img src="./Haviarchitecture/1770351693758-dv9uj1hprg.png" alt="Apartment Lobby, Emerald Heritage Lounge" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
-                                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-300"></div>
-                                        <div class="absolute bottom-0 left-0 right-0 p-8 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
-                                            <div class="flex items-center gap-2 mb-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100">
-                                                <span class="px-3 py-1 bg-green text-white text-[10px] font-bold uppercase tracking-widest rounded-full">Interior</span>
-                                            </div>
-                                            <h3 class="text-2xl font-bold mb-3 text-white">Apartment Lobby, Emerald Heritage Lounge</h3>
-                                            <p class="text-white/80 line-clamp-2 text-sm max-w-xs opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-200 mb-4">Emerald Heritage Lounge
-
-Ruang ini dirancang sebagai sebuah jeda—sebuah interior yang tidak sekadar berfungsi sebagai lounge, tetapi sebagai pengalaman emosional yang menenangkan. Emerald Heritage Lounge memaknai kemewahan bukan melalui kemegahan berlebihan, melainkan melalui ketenangan, kedalaman warna, dan kejujuran material.
-
-Bahasa ruang dibentuk oleh geometri melengkung yang mengalir, hadir pada dinding dan plafon sebagai upaya melembutkan batas serta menghilangkan kesan rigid. Kurva-kurva ini membimbing pergerakan secara intuitif, menciptakan sirkulasi yang natural dan ritme ruang yang tenang. Tidak ada sudut tajam yang mendominasi—ruang memilih untuk bersikap ramah dan merangkul.
-
-Palet hijau zamrud menjadi elemen utama yang membangun atmosfer kontemplatif. Warna ini merepresentasikan keseimbangan antara alam dan kemewahan klasik, diperkuat oleh material kulit coklat tua, kayu gelap, dan lantai batu alam yang menghadirkan kesan hangat, berat, dan membumi. Setiap material dipilih untuk menua dengan indah, membentuk karakter ruang yang bertahan melampaui tren.
-
-Plafon aksen dengan tekstur artistik berwarna keemasan berfungsi sebagai focal point visual—sebuah elemen dramatik yang tidak mendominasi, namun memberi identitas kuat pada ruang. Cahaya hangat tersembunyi mengikuti kontur plafon, menciptakan efek melayang dan mempertegas kedalaman ruang tanpa silau, menghadirkan ambience yang intim dan bersahaja.
-
-Tata furnitur disusun dalam kelompok-kelompok kecil, membentuk ruang duduk yang privat tanpa sekat masif. Tanaman indoor berdaun lebar digunakan sebagai elemen transisi, memperhalus skala ruang sekaligus memperkuat hubungan visual dengan alam. Ruang publik ini kemudian terasa personal—terbuka, namun tetap terlindungi.
-
-Emerald Heritage Lounge dirancang sebagai interior yang bersikap tenang di tengah dinamika. Sebuah ruang yang mengundang untuk berhenti sejenak, duduk, dan merasakan waktu berjalan lebih lambat—di mana kemewahan hadir bukan untuk dipamerkan, melainkan untuk dirasakan.</p>
-                                            <div class="flex items-center gap-2 text-primary text-xs font-bold uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-300">
-                                                <a href="./Details/" class="flex items-center gap-1">
-                                                    View Case Study 
-                                                </a>
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right w-4 h-4">
-                                                    <path d="M5 12h14"></path>
-                                                    <path d="m12 5 7 7-7 7"></path>
-                                                </svg>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                            <div id="projectContainer" class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                                <!-- Project items will be dynamically inserted here -->
                             </div>
                         </div>
                     </section>
@@ -1540,10 +1401,10 @@ Emerald Heritage Lounge dirancang sebagai interior yang bersikap tenang di tenga
                                     <div class="grid grid-cols-2 gap-8">
                                         <div class="space-y-8 mt-12">
                                             <div class="relative rounded-2xl border-none text-[#2C2C2C] p-2 hover:shadow-neumorph-hover cursor-pointer overflow-hidden ease-in-out rotate-2 hover:rotate-0 transition-transform duration-500 bg-[#F0F0F0] shadow-neumorph-outset" style="transform: none;">
-                                                <img src="./Haviarchitecture/kks-thouse-8-lloqb.png" alt="Detail 1" class="rounded-2xl w-full h-48 object-cover shadow-inner">
+                                                <img src="./Haviarchitecture/38e7f5f5735a79ef1e1e628bd529588d.jpg" alt="Detail 1" class="rounded-2xl w-full h-48 object-cover shadow-inner">
                                             </div>
                                             <div class="relative rounded-2xl border-none text-[#2C2C2C] p-2 hover:shadow-neumorph-hover cursor-pointer overflow-hidden ease-in-out -rotate-2 hover:rotate-0 transition-transform duration-500 bg-[#F0F0F0] shadow-neumorph-outset">
-                                                <img src="./Haviarchitecture/1r-1-x0MxY.png" alt="Detail 2" class="rounded-2xl w-full h-64 object-cover shadow-inner">
+                                                <img src="./Haviarchitecture/1770351693758-dv9uj1hprg.png" alt="Detail 2" class="rounded-2xl w-full h-64 object-cover shadow-inner">
                                             </div>
                                         </div>
                                         <div class="space-y-8">
