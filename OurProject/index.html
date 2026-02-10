@@ -35,30 +35,38 @@
             const cards = document.querySelectorAll(".shadow-neumorph-outset");
             const projects = document.querySelectorAll("#project-grid > div");
 
-            input.addEventListener("input", () => {
-                const keyword = input.value.toLowerCase().trim();
+            function filterProjects(keyword) {
+                keyword = keyword.toLowerCase().trim();
 
-                  if (keyword === "") {
-                    projects.forEach(p => p.style.display = "");
-                    return; // ⛔ stop di sini
+                if (keyword === "") {
+                projects.forEach(p => p.style.display = "");
+                return;
                 }
-                // hide semua project dulu
+
                 projects.forEach(p => p.style.display = "none");
 
                 cards.forEach(card => {
-                const text = card.innerText.toLowerCase();
                 const project = card.closest("#project-grid > div");
+                if (!project) return; // ⛔ WAJIB ADA
 
+                const text = card.innerText.toLowerCase();
                 if (text.includes(keyword)) {
                     project.style.display = "";
                 }
                 });
+            }
 
-                // kalau kosong → tampilkan semua
-                if (keyword === "") {
-                projects.forEach(p => p.style.display = "");
-                }
+            input.addEventListener("input", () => {
+                filterProjects(input.value);
             });
+
+            // auto search dari URL
+            const params = new URLSearchParams(window.location.search);
+            const searchParam = params.get("search");
+            if (searchParam) {
+                input.value = searchParam;
+                filterProjects(searchParam);
+            }
             });
         </script>
         <script type="module">
