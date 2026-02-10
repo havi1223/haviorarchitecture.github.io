@@ -29,6 +29,38 @@
             }
             ;
         </script>
+        <script>
+            document.addEventListener("DOMContentLoaded", () => {
+            const input = document.getElementById("search-input");
+            const cards = document.querySelectorAll(".shadow-neumorph-outset");
+            const projects = document.querySelectorAll("#project-grid > div");
+
+            input.addEventListener("input", () => {
+                const keyword = input.value.toLowerCase().trim();
+
+                  if (keyword === "") {
+                    projects.forEach(p => p.style.display = "");
+                    return; // ⛔ stop di sini
+                }
+                // hide semua project dulu
+                projects.forEach(p => p.style.display = "none");
+
+                cards.forEach(card => {
+                const text = card.innerText.toLowerCase();
+                const project = card.closest("#project-grid > div");
+
+                if (text.includes(keyword)) {
+                    project.style.display = "";
+                }
+                });
+
+                // kalau kosong → tampilkan semua
+                if (keyword === "") {
+                projects.forEach(p => p.style.display = "");
+                }
+            });
+            });
+        </script>
         <script type="module">
             const observer = new MutationObserver( (mutations) => {
                 for (const mutation of mutations) {
@@ -164,16 +196,16 @@
             <div class="bg-white min-h-screen font-sans text-[#2C2C2C]">
                 <header class="fixed top-4 left-4 right-4 z-50 transition-all duration-300 rounded-2xl bg-transparent py-6 px-4" style="transform: none;">
                     <div class="container mx-auto flex justify-between items-center">
-                        <a class="flex items-center gap-3 group relative z-50" href="../index.html">
+                        <a class="flex items-center gap-3 group relative z-50" href="../">
                             <div class="h-10 w-auto transition-transform duration-300 group-hover:scale-105">
                                 <img src="../Haviarchitecture/Logo.jpg" alt="Havior Architecture" class="h-full w-auto object-contain">
                             </div>
                         </a>
                         <div class="hidden md:flex items-center gap-4 bg-[#F0F0F0] px-2 py-2 rounded-2xl shadow-neumorph-inset border border-white/30">
                             <nav class="flex items-center gap-2">
-                                <button class="px-6 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 text-[#2C2C2C]/70 hover:text-primary hover:shadow-neumorph-outset"><a href="../index.html#featured-projects">Projects</a></button>
-                                <button class="px-6 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 text-[#2C2C2C]/70 hover:text-primary hover:shadow-neumorph-outset"><a href="../index.html#paket-jasa">Paket Jasa</a></button>
-                                <button class="px-6 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 text-[#2C2C2C]/70 hover:text-primary hover:shadow-neumorph-outset"><a href="../index.html#about">About</a></button>
+                                <button class="px-6 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 text-[#2C2C2C]/70 hover:text-primary hover:shadow-neumorph-outset"><a href="../#featured-projects">Projects</a></button>
+                                <button class="px-6 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 text-[#2C2C2C]/70 hover:text-primary hover:shadow-neumorph-outset"><a href="../#paket-jasa">Paket Jasa</a></button>
+                                <button class="px-6 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 text-[#2C2C2C]/70 hover:text-primary hover:shadow-neumorph-outset"><a href="../#about">About</a></button>
                             </nav>
                             <a href="https://wa.me/6285645259797?text=Halo%20Saya%20mau%20order%20untuk%20paket%20Desain%20%2C%2C" target="_blank" rel="noopener noreferrer">
                                 <button class="inline-flex items-center justify-center font-bold ring-offset-background transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary shadow-neumorph-outset hover:shadow-neumorph-hover hover:brightness-105 active:shadow-neumorph-inset h-10 rounded-lg px-4 text-xs ml-2 gap-2 text-[#2C2C2C]">
@@ -209,11 +241,11 @@
                                         <circle cx="11" cy="11" r="8"></circle>
                                         <path d="m21 21-4.3-4.3"></path>
                                     </svg>
-                                    <input class="flex w-full px-4 py-2 text-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary/50 disabled:cursor-not-allowed disabled:opacity-50 transition-all duration-300 pl-12 bg-white border-none shadow-neumorph-inset h-12 rounded-xl text-[#2C2C2C] font-bold placeholder:text-[#2C2C2C]/30 focus:ring-1 focus:ring-primary/50" placeholder="Search projects..." value="">
+                                    <input id="search-input" class="flex w-full px-4 py-2 text-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary/50 disabled:cursor-not-allowed disabled:opacity-50 transition-all duration-300 pl-12 bg-white border-none shadow-neumorph-inset h-12 rounded-xl text-[#2C2C2C] font-bold placeholder:text-[#2C2C2C]/30 focus:ring-1 focus:ring-primary/50" placeholder="Search projects..." value="">
                                 </div>
                             </div>
                         </div>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
+                        <div id="project-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
                             <div style="opacity: 1; transform: none;">
                                 <div class="relative rounded-2xl shadow-neumorph-outset border-none bg-white text-[#2C2C2C] p-0 hover:shadow-neumorph-hover transition-all duration-300 ease-in-out h-full flex flex-col group overflow-hidden cursor-pointer">
                                     <div class="relative aspect-[4/3] overflow-hidden m-3 rounded-[1.25rem] shadow-neumorph-inset bg-white">
@@ -255,7 +287,7 @@
                                         </div>
                                     </div>
                                     <div class="p-6 pt-2 flex flex-col flex-grow">
-                                        <a href="../Details/index.html"><h3 class="text-xl font-bold text-[#2C2C2C] mb-3 group-hover:text-primary transition-colors line-clamp-1">MMHouse, Concrete Canopy House</h3></a>
+                                        <a href="../Details/"><h3 class="text-xl font-bold text-[#2C2C2C] mb-3 group-hover:text-primary transition-colors line-clamp-1">MMHouse, Concrete Canopy House</h3></a>
                                         <p class="text-sm text-[#2C2C2C]/60 line-clamp-2 leading-relaxed mb-6 flex-grow font-medium">Concrete Canopy House
 
 Concrete Canopy House dirancang sebagai hunian tropis kontemporer yang mengedepankan ketenangan, perlindungan, dan kejujuran material. Bangunan ini merespons iklim dan konteks tapak melalui komposisi massa yang tegas namun bersahaja, menghadirkan rumah yang tidak menonjol secara berlebihan, tetapi kuat dalam karakter dan pengalaman ruang.
@@ -672,13 +704,13 @@ Perpaduan prinsip minimalisme dan arsitektur tropikal menghasilkan hunian yang t
                                     <h4 class="font-bold text-sm uppercase tracking-widest mb-6 text-primary shadow-neumorph-inset inline-block px-3 py-1 rounded-lg">Explore</h4>
                                     <ul class="space-y-4">
                                         <li>
-                                            <a href="../index.html#featured-projects" class="text-[#2C2C2C]/70 hover:text-primary font-medium transition-colors hover:shadow-neumorph-outset px-2 py-1 rounded-md inline-block">Projects</a>
+                                            <a href="../#featured-projects" class="text-[#2C2C2C]/70 hover:text-primary font-medium transition-colors hover:shadow-neumorph-outset px-2 py-1 rounded-md inline-block">Projects</a>
                                         </li>
                                         <li>
-                                            <a href="../index.html#paket-jasa" class="text-[#2C2C2C]/70 hover:text-primary font-medium transition-colors hover:shadow-neumorph-outset px-2 py-1 rounded-md inline-block">Paket Jasa</a>
+                                            <a href="../#paket-jasa" class="text-[#2C2C2C]/70 hover:text-primary font-medium transition-colors hover:shadow-neumorph-outset px-2 py-1 rounded-md inline-block">Paket Jasa</a>
                                         </li>
                                         <li>
-                                            <a href="../index.html#contact" class="text-[#2C2C2C]/70 hover:text-primary font-medium transition-colors hover:shadow-neumorph-outset px-2 py-1 rounded-md inline-block">Kontak</a>
+                                            <a href="../#contact" class="text-[#2C2C2C]/70 hover:text-primary font-medium transition-colors hover:shadow-neumorph-outset px-2 py-1 rounded-md inline-block">Kontak</a>
                                         </li>
                                     </ul>
                                 </div>
