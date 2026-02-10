@@ -1,0 +1,79 @@
+[
+  {
+    "id": 1,
+    "title": "LPTQ, Kalimantan",
+    "category": "arsitek",
+    "categoryLabel": "Arsitek",
+    "categoryColor": "#A8E6CF",
+    "image": "1770540468275-0zb001dkoys.png",
+    "description": "Minimalist residential project focused on open spaces and natural light.",
+    "location": "Kalimantan",
+    "year": 2024
+  },
+  {
+    "id": 2,
+    "title": "MM House, Concrete Canopy House",
+    "category": "arsitek",
+    "categoryLabel": "Arsitek",
+    "categoryColor": "#A8E6CF",
+    "image": "1770518627720-qwv8pweatzb.png",
+    "description": "Tropical contemporary house emphasizing protection, calm, and honest material expression using exposed concrete.",
+    "location": "Muara Bungo, Jambi",
+    "year": 2024
+  },
+  {
+    "id": 3,
+    "title": "Emerald Heritage Lounge",
+    "category": "interior",
+    "categoryLabel": "Interior",
+    "categoryColor": "#FF9F43",
+    "image": "1770351693758-dv9uj1hprg.png",
+    "description": "Luxury apartment lobby interior with emerald tones, curved geometry, and warm ambient lighting.",
+    "location": "Jakarta Utara",
+    "year": 2024
+  },
+  {
+    "id": 4,
+    "title": "Quiet Permeability House",
+    "category": "arsitek",
+    "categoryLabel": "Arsitek",
+    "categoryColor": "#A8E6CF",
+    "image": "1770107355307-92prlzauvdq.png",
+    "description": "A calm residential architecture that filters light, air, and views while maintaining privacy.",
+    "location": "Jambi",
+    "year": 2025
+  },
+  {
+    "id": 5,
+    "title": "Inward Calm House",
+    "category": "arsitek",
+    "categoryLabel": "Arsitek",
+    "categoryColor": "#A8E6CF",
+    "image": "1769997423000-z11hqkwo809.webp",
+    "description": "House that turns inward through courtyards and voids, prioritizing privacy and spatial calm.",
+    "location": "Jakarta Timur",
+    "year": 2026
+  },
+  {
+    "id": 6,
+    "title": "MYS House Construction",
+    "category": "konstruksi",
+    "categoryLabel": "Konstruksi",
+    "categoryColor": "#6C757D",
+    "image": "1769374884011-kl8vxqf5d1.webp",
+    "description": "Residential construction project focusing on structural honesty, exposed concrete, and long-term durability.",
+    "location": "Bekasi",
+    "year": 2025
+  },
+  {
+    "id": 7,
+    "title": "FO Office Interior Fit-Out",
+    "category": "interior",
+    "categoryLabel": "Interior",
+    "categoryColor": "#FF9F43",
+    "image": "1769371429760-fc7wknre7y7.webp",
+    "description": "Modern office interior design emphasizing efficiency, warm lighting, and functional zoning.",
+    "location": "Jakarta",
+    "year": 2025
+  }
+]
