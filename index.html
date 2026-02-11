@@ -61,7 +61,7 @@
 
                 card.innerHTML = `
                     <div class="relative w-full h-full rounded-[1.5rem] overflow-hidden shadow-neumorph-inset">
-                    <img src="./Haviarchitecture/${project.image}" alt="${project.title}"
+                    <img src="./Haviarchitecture/${project.folder}/${project.image}" alt="${project.title}"
                         class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
 
                     <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
@@ -853,16 +853,16 @@
                                             <span class="text-xs font-bold tracking-widest uppercase text-[#2C2C2C]/80">Architecture &amp;Interior Design</span>
                                         </div>
                                         <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.1] mb-8 text-[#2C2C2C] tracking-tight drop-shadow-sm">
-                                            Minimalist spaces <br>
+                                            We design spaces <br>
+                                            shaped by <br>
                                             <span class="text-primary relative inline-block">
-                                                meaningful
+                                                behavior.
                                                 <svg class="absolute w-full h-4 -bottom-2 left-0 text-primary opacity-40" viewBox="0 0 100 10" preserveAspectRatio="none">
                                                     <path d="M0 5 Q 50 15 100 5" stroke="currentColor" stroke-width="12" fill="none" stroke-linecap="round"></path>
                                                 </svg>
                                             </span>
-                                            living.
                                         </h1>
-                                        <p class="text-xl text-[#2C2C2C]/70 mb-12 max-w-lg leading-relaxed font-medium">We craft contemplative and tropical architectural concepts, focusing on spatial narrative, atmosphere, and human experience</p>
+                                        <p class="text-xl text-[#2C2C2C]/70 mb-12 max-w-lg leading-relaxed font-medium">Guided by our core principle, Responding to Behavioral Spaces, every project is rooted in context, driven by user dynamics, and translated into architecture that is intentional, functional, and rich in character.</p>
                                         <div class="flex flex-col sm:flex-row gap-6 w-full sm:w-auto">
                                             <a href="./OurProject/">
                                                 <button class="inline-flex items-center justify-center font-bold ring-offset-background duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 active:text-primary h-14 rounded-xl px-10 w-full sm:w-auto text-lg bg-green text-[#2C2C2C] shadow-neumorph-outset hover:shadow-neumorph-hover active:shadow-neumorph-inset active:scale-95 transition-all">
@@ -971,10 +971,10 @@
                                         </div>
                                         <span class="text-xs font-bold bg-cream-light px-3 py-1 rounded-full text-black/60 border border-black/5 shadow-inner">8 Projects</span>
                                     </div>
-                                    <h3 class="text-2xl font-bold text-black mb-4 group-hover:text-green transition-colors">Construction</h3>
+                                    <h3 class="text-2xl font-bold text-black mb-4 group-hover:text-green transition-colors">Landscape</h3>
                                     <p class="text-black/60 text-sm leading-relaxed mb-8 flex-grow">Technical execution ensuring design integrity and structural longevity.</p>
                                     <div class="flex items-center gap-2 text-sm font-bold text-primary group-hover:translate-x-2 transition-transform duration-300">
-                                       <a href="OurProject/?search=Konstruksi">  Explore Collection </a> <span class="text-lg">→</span>
+                                       <a href="OurProject/?search=Landscape">  Explore Collection </a> <span class="text-lg">→</span>
                                     </div>
                                 </div>
                             </div>
@@ -1100,7 +1100,7 @@
                                                                 <path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"></path>
                                                                 <path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"></path>
                                                             </svg>
-                                                            Kisaran Budget Konstruksi
+                                                            Kisaran Budget Landscape
                                                         </label>
                                                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                                             <div class="relative">
@@ -1113,7 +1113,7 @@
                                                             </div>
                                                         </div>
                                                         <div class="flex justify-between items-start">
-                                                            <p class="text-[10px] text-gray-400">Estimasi budget untuk pelaksanaan konstruksi.</p>
+                                                            <p class="text-[10px] text-gray-400">Estimasi budget untuk pelaksanaan Landscape.</p>
                                                         </div>
                                                     </div>
                                                     <div class="space-y-1.5 w-full">
@@ -1421,18 +1421,18 @@
                                     <div class="grid grid-cols-2 gap-8">
                                         <div class="space-y-8 mt-12">
                                             <div class="relative rounded-2xl border-none text-[#2C2C2C] p-2 hover:shadow-neumorph-hover cursor-pointer overflow-hidden ease-in-out rotate-2 hover:rotate-0 transition-transform duration-500 bg-[#F0F0F0] shadow-neumorph-outset" style="transform: none;">
-                                                <img src="./Haviarchitecture/38e7f5f5735a79ef1e1e628bd529588d.jpg" alt="Detail 1" class="rounded-2xl w-full h-48 object-cover shadow-inner">
+                                                <img src="./Haviarchitecture/01/1.jpg" alt="Detail 1" class="rounded-2xl w-full h-48 object-cover shadow-inner">
                                             </div>
                                             <div class="relative rounded-2xl border-none text-[#2C2C2C] p-2 hover:shadow-neumorph-hover cursor-pointer overflow-hidden ease-in-out -rotate-2 hover:rotate-0 transition-transform duration-500 bg-[#F0F0F0] shadow-neumorph-outset">
-                                                <img src="./Haviarchitecture/1770351693758-dv9uj1hprg.png" alt="Detail 2" class="rounded-2xl w-full h-64 object-cover shadow-inner">
+                                                <img src="./Haviarchitecture/02/31.jpg" alt="Detail 2" class="rounded-2xl w-full h-64 object-cover shadow-inner">
                                             </div>
                                         </div>
                                         <div class="space-y-8">
                                             <div class="relative rounded-2xl border-none text-[#2C2C2C] p-2 hover:shadow-neumorph-hover cursor-pointer overflow-hidden ease-in-out -rotate-1 hover:rotate-0 transition-transform duration-500 bg-[#F0F0F0] shadow-neumorph-outset" style="transform: none;">
-                                                <img src="./Haviarchitecture/gemini_generated_image_tu30zjtu30zjtu30-hSkjz.png" alt="Detail 3" class="rounded-2xl w-full h-64 object-cover shadow-inner">
+                                                <img src="./Haviarchitecture/03/3.jpg" alt="Detail 3" class="rounded-2xl w-full h-64 object-cover shadow-inner">
                                             </div>
                                             <div class="relative rounded-2xl border-none text-[#2C2C2C] p-2 hover:shadow-neumorph-hover cursor-pointer overflow-hidden ease-in-out rotate-1 hover:rotate-0 transition-transform duration-500 bg-[#F0F0F0] shadow-neumorph-outset">
-                                                <img src="./Haviarchitecture/pjof-5-CU2MQ.png" alt="Detail 4" class="rounded-2xl w-full h-48 object-cover shadow-inner">
+                                                <img src="./Haviarchitecture/04/1.jpg" alt="Detail 4" class="rounded-2xl w-full h-48 object-cover shadow-inner">
                                             </div>
                                         </div>
                                     </div>
