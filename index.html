@@ -49,6 +49,33 @@
             };
         </script>
         <script>
+            async function loadCount() {
+            const response = await fetch('./Haviarchitecture/project.json')
+            const projects = await response.json();
+
+            const counts = projects.reduce((acc, project) => {
+                const key = project.categoryLabel;
+                acc[key] = (acc[key] || 0) + 1;
+                return acc;
+            }, {});
+
+            // document.getElementById("countAll").textContent =
+            //     `${projects.length} Projects`;
+
+            document.getElementById("countArsitektur").textContent =
+                `${counts["Arsitektur"] || 0} Projects`;
+
+            document.getElementById("countInterior").textContent =
+                `${counts["Interior"] || 0} Projects`;
+
+            document.getElementById("countLandscape").textContent =
+                `${counts["Landscape"] || 0} Projects`;
+            }
+
+            loadCount();
+
+        </script>
+        <script>
             fetch('./Haviarchitecture/project.json')
             .then(res => res.json())
             .then(projects => {
@@ -939,7 +966,7 @@
                                                 <rect x="4" y="4" width="16" height="16" stroke="currentColor" stroke-width="2.5"></rect>
                                             </svg>
                                         </div>
-                                        <span class="text-xs font-bold bg-cream-light px-3 py-1 rounded-full text-black/60 border border-black/5 shadow-inner">12 Projects</span>
+                                       <span id="countArsitektur" class="text-xs font-bold bg-cream-light px-3 py-1 rounded-full text-black/60 border border-black/5 shadow-inner"></span>
                                     </div>
                                     <h3 class="text-2xl font-bold text-black mb-4 group-hover:text-green transition-colors">Architecture</h3>
                                     <p class="text-black/60 text-sm leading-relaxed mb-8 flex-grow">Holistic building design focusing on structure, light, and context.</p>
@@ -954,7 +981,7 @@
                                                 <circle cx="12" cy="12" r="8" stroke="currentColor" stroke-width="2.5"></circle>
                                             </svg>
                                         </div>
-                                        <span class="text-xs font-bold bg-cream-light px-3 py-1 rounded-full text-black/60 border border-black/5 shadow-inner">18 Projects</span>
+                                        <span id="countInterior"class="text-xs font-bold bg-cream-light px-3 py-1 rounded-full text-black/60 border border-black/5 shadow-inner"></span>
                                     </div>
                                     <h3 class="text-2xl font-bold text-black mb-4 group-hover:text-green transition-colors">Interior</h3>
                                     <p class="text-black/60 text-sm leading-relaxed mb-8 flex-grow">Curated interior environments that elevate daily living experiences.</p>
@@ -969,7 +996,7 @@
                                                 <path d="M12 4V20M4 12H20" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path>
                                             </svg>
                                         </div>
-                                        <span class="text-xs font-bold bg-cream-light px-3 py-1 rounded-full text-black/60 border border-black/5 shadow-inner">8 Projects</span>
+                                        <span id="countLandscape" class="text-xs font-bold bg-cream-light px-3 py-1 rounded-full text-black/60 border border-black/5 shadow-inner"></span>
                                     </div>
                                     <h3 class="text-2xl font-bold text-black mb-4 group-hover:text-green transition-colors">Landscape</h3>
                                     <p class="text-black/60 text-sm leading-relaxed mb-8 flex-grow">Technical execution ensuring design integrity and structural longevity.</p>
