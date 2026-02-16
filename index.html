@@ -36,7 +36,7 @@
             }
             ;
         </script>
-        // <script>
+        <script>
         //     // Disable right-click
         //     document.addEventListener('contextmenu', (e) => e.preventDefault());
 
@@ -55,7 +55,7 @@
         //     )
         //         return false;
         //     };
-        // </script>
+        </script>
         <script>
             async function loadCount() {
             const response = await fetch('./Haviarchitecture/project.json')
@@ -432,7 +432,7 @@
                         const radio = option.querySelector('.package-radio')
                         if (option.classList.contains('selected')) {
                             radio.innerHTML = '<div class="w-2.5 h-2.5 rounded-full bg-white shadow-sm"></div>'
-                            radio.style.backgroundColor = '#A8E6CF'
+                            radio.style.backgroundColor = '#A47135'
                             radio.style.boxShadow = '0 2px 8px rgba(0,0,0,0.1)'
                         } else {
                             radio.innerHTML = ''
@@ -745,10 +745,10 @@
         </script>
         <style>
             .green-button {
-                    background-color: rgb(164 113 53);
+                    background-color: rgb(62 147 117);
             }
             .project-type-btn.selected-type {
-                background-color: #A8E6CF !important;
+                background-color: rgb(164 113 53)!important;
                 color: #2C2C2C !important;
                 box-shadow: 0 6px 12px rgba(0,0,0,0.06) !important;
             }
@@ -768,8 +768,8 @@
                     }
                 }
 
-                if (!errorString) {
-                    errorString = args.map(arg => typeof arg === 'object' ? JSON.stringify(arg) : String(arg)).join(' ');
+                        background-color: #A8E6CF !important;
+(arg => typeof arg === 'object' ? JSON.stringify(arg) : String(arg)).join(' ');
                 }
 
                 window.parent.postMessage({
